@@ -9,31 +9,36 @@ const custosDiversosJan = [
         id: Math.random(),
         desc: 'Conta Luz',
         valor: 100,
-        pago: true
+        pago: true,
+        dataPagamento: '2021-10-15'
     },
     {
         id: Math.random(),
         desc: 'Conta Agua',
         valor: 100,
         pago: true,
+        dataPagamento: '2021-11-15'
     },
     {
         id: Math.random(),
         desc: 'Telefone',
         valor: 100,
         pago: false,
+        dataPagamento: '2021-09-15'
     },
     {
         id: Math.random(),
         desc: 'Internet',
         valor: 100,
         pago: false,
+        dataPagamento: '2021-10-10'
     },
     {
         id: Math.random(),
         desc: 'Seguro',
         valor: 100,
         pago: true,
+        dataPagamento: '2021-10-20'
     },
     {
         id: Math.random(),
@@ -124,7 +129,12 @@ const CustosDiversosList = (props) => {
             </View>
             <FlatList data={custosDiversosJan}
                 keyExtractor={item => `${item.id}`}
-                renderItem={({ item }) => <ItemCusto pago={item.pago} desc={item.desc} valor={item.valor} />}
+                renderItem={({ item }) => 
+                <ItemCusto 
+                pago={item.pago} 
+                desc={item.desc} 
+                valor={item.valor}
+                dataPagamento={item.dataPagamento} />}
             />
         </View>
     )

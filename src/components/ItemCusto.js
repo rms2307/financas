@@ -1,10 +1,16 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+
+import moment from 'moment'
+import 'moment/locale/pt-br'
 
 import colors from '../common/colors'
 
 const ItemCusto = (props) => {
-    const [pago, setPago] = useState(false)
+
+    const dataPagamento = props.dataPagamento || moment()
+    const dia = moment(dataPagamento).locale('pt-br').format('DD')
+    const mes = moment(dataPagamento).locale('pt-br').format('MMM')
 
     const pagoOrNotStyle = props.pago == true
         ? { backgroundColor: colors.outros }
@@ -15,8 +21,8 @@ const ItemCusto = (props) => {
             <View style={styles.labelsContainer}>
                 <View style={[{ backgroundColor: colors.despesas, height: '100%', width: 10 }, pagoOrNotStyle]}></View>
                 <View style={styles.containerData}>
-                    <Text style={styles.textData}>10</Text>
-                    <Text style={styles.textData}>Fev</Text>
+                    <Text style={styles.textData}>{dia}</Text>
+                    <Text style={styles.textData}>{mes}</Text>
                 </View>
                 <View style={{ marginLeft: 10 }}>
                     <Text style={styles.title}>{props.desc}</Text>

@@ -2,20 +2,18 @@ import React, { useState } from 'react'
 import {
     SafeAreaView,
     StyleSheet,
-    ScrollView,
     StatusBar,
-    View,
 } from 'react-native'
-import { Colors } from 'react-native/Libraries/NewAppScreen'
+import { NavigationContainer } from '@react-navigation/native'
 
 import Header from '../components/Header'
 import ModalMeses from '../components/ModalMeses'
-import CustosFixosList from '../components/CustosFixosList'
-import CustosDiversosList from '../components/CustosDiversosList'
+import Stack from '../routes/Stack'
 
 import colors from '../common/colors'
 
 const Month = () => {
+
     const getMesAtual = () => {
         let mes = new Date()
         switch (mes.getMonth()) {
@@ -41,27 +39,19 @@ const Month = () => {
         setMesAtual(mes)
         setOpenModal(false)
     }
-
+    
     return (
         <>
             <StatusBar backgroundColor={colors.primary.dark} />
             <Header mesAtual={mesAtual} onOpenModal={() => setOpenModal(true)} />
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <ModalMeses isVisible={openModal}
                     onCancel={() => setOpenModal(false)}
                     onSetMesAtual={(mes) => onSetMesAtual(mes)} />
-                {/* <Summary
-                    mes={mesAtual}
-                    saldo={1000}
-                    receita={1000}
-                    despesaFixa={100}
-                    despesaDiversa={150}
-                    cartao={850}
-                /> */}
-                {/* <CustosFixosList mes={mesAtual} /> */}
-
-                <CustosDiversosList />
-            </View>
+                <NavigationContainer>
+                    <Stack />
+                </NavigationContainer>
+            </SafeAreaView>
         </>
     )
 }
@@ -69,7 +59,7 @@ const Month = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.lighter,
+        backgroundColor: colors.background,
     }
 })
 
