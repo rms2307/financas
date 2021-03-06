@@ -176,10 +176,11 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 24,
         fontWeight: 'bold',
-        color: colors.secondary.dark
+        marginRight: 10,
+        color: colors.despesas
     },
     money: {
-        color: colors.secondary.dark,
+        color: colors.despesas,
         fontWeight: 'bold',
         fontSize: 24
     }

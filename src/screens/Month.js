@@ -48,9 +48,9 @@ const Month = () => {
                 <ModalMeses isVisible={openModal}
                     onCancel={() => setOpenModal(false)}
                     onSetMesAtual={(mes) => onSetMesAtual(mes)} />
-                <NavigationContainer>
+                {/* <NavigationContainer> */}
                     <Stack />
-                </NavigationContainer>
+                {/* </NavigationContainer> */}
             </SafeAreaView>
         </>
     )

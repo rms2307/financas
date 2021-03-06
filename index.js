@@ -1,7 +1,6 @@
 import { AppRegistry } from 'react-native';
 import { name as appName } from './app.json';
 
-import Month from './src/screens/Month'
-import CreditCard from './src/screens/CreditCard'
+import Tab from './src/routes/Tab'
 
-AppRegistry.registerComponent(appName, () => CreditCard);
+AppRegistry.registerComponent(appName, () => Tab);
