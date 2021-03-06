@@ -51,7 +51,8 @@ const styles = StyleSheet.create({
     },
     btn: {
         flex: 1,
-        padding: 8,
+        paddingHorizontal: 8,
+        paddingTop: 8,
         alignItems: 'center',
         backgroundColor: '#fff',
     },

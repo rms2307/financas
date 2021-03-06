@@ -39,7 +39,7 @@ const Month = () => {
         setMesAtual(mes)
         setOpenModal(false)
     }
-    
+
     return (
         <>
             <StatusBar backgroundColor={colors.primary.dark} />
@@ -48,9 +48,7 @@ const Month = () => {
                 <ModalMeses isVisible={openModal}
                     onCancel={() => setOpenModal(false)}
                     onSetMesAtual={(mes) => onSetMesAtual(mes)} />
-                {/* <NavigationContainer> */}
-                    <Stack />
-                {/* </NavigationContainer> */}
+                <Stack />
             </SafeAreaView>
         </>
     )

@@ -41,4 +41,3 @@ const Stack = (props) => {
 }
 
 export default Stack
-
