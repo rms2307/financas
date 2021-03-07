@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Text, StyleSheet, FlatList, Dimensions } from 'react-native'
 
 import ItemCusto from './ItemCusto'
+import BotaoAdd from './BotaoAdd'
 import colors from '../common/colors'
 
 const custosDiversosJan = [
@@ -124,18 +125,19 @@ const CustosDiversosList = (props) => {
     return (
         <View style={styles.container}>
             <View style={styles.containerTitle}>
-                <Text style={styles.title}>Custos Diversos</Text>
+                <Text style={styles.title}>Total: </Text>
                 <Text style={styles.money}>R$ 1200,00</Text>
             </View>
             <FlatList data={custosDiversosJan}
                 keyExtractor={item => `${item.id}`}
-                renderItem={({ item }) => 
-                <ItemCusto 
-                pago={item.pago} 
-                desc={item.desc} 
-                valor={item.valor}
-                dataPagamento={item.dataPagamento} />}
+                renderItem={({ item }) =>
+                    <ItemCusto
+                        pago={item.pago}
+                        desc={item.desc}
+                        valor={item.valor}
+                        dataPagamento={item.dataPagamento} />}
             />
+            <BotaoAdd />
         </View>
     )
 }
@@ -148,16 +150,18 @@ const styles = StyleSheet.create({
     },
     containerTitle: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
         marginBottom: 10,
     },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
-        color: colors.secondary.dark
+        marginRight: 10,
+        color: colors.despesas
     },
     money: {
-        color: colors.secondary.dark,
+        color: colors.despesas,
         fontWeight: 'bold',
         fontSize: 24
     }

@@ -12,8 +12,6 @@ const Resumo = (props) => {
 
     return (
         <View style={styles.card}>
-            <Text style={styles.title}>Visão Geral</Text>
-
             <View style={styles.container}>
                 <View style={styles.labelsContainer}>
                     <View style={{ backgroundColor: colors.primary.dark, height: '100%', width: 10 }}></View>
