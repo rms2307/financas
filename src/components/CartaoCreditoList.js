@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Text, StyleSheet, FlatList, Dimensions } from 'react-native'
 
 import ItemCredito from './ItemCredito'
+import BotaoAdd from './BotaoAdd'
 import colors from '../common/colors'
 
 const custosDiversosJan = [
@@ -157,6 +158,7 @@ const CartaoCreditoList = (props) => {
                         parcelaAtual={item.parcelaAtual}
                         dataCompra={item.dataCompra} />}
             />
+            <BotaoAdd />
         </View>
     )
 }
