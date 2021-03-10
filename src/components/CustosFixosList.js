@@ -62,7 +62,8 @@ const CustosFixosList = (props) => {
             <ModalAddItem isVisible={openModal}
                 onCancel={() => setOpenModal(false)}
                 onSave={addCusto}
-                title={'Novo Custo Fixo'} />
+                title={'Novo Custo Fixo'}
+                fixo={true} />
             <View style={styles.containerTitle}>
                 <Text style={styles.title}>Total: </Text>
                 <Text style={styles.money}>R$ 1200,00</Text>

@@ -18,9 +18,10 @@ const ModalAddItem = (props) => {
     const [desc, setDesc] = useState('')
     const [valor, setValor] = useState('')
     const [data, setData] = useState(new Date())
+    const [repetirCusto, setRepetirCusto] = useState('')
 
     const [showDatePicker, setShowDatePicker] = useState(false)
-    
+
     const add = () => {
         const newCusto = {
             id: Math.random(),
@@ -77,6 +78,13 @@ const ModalAddItem = (props) => {
                         onChangeText={valor => setValor(valor)}
                         keyboardType='numeric'
                     />
+                    {props.fixo &&
+                        <TextInput style={[styles.input, { flex: 0.5 }]}
+                            placeholder='Repetir'
+                            value={repetirCusto}
+                            onChangeText={qtd => setRepetirCusto(qtd)}
+                            keyboardType='numeric' />
+                    }
                 </View>
                 <View style={styles.containerDatePicker}>
                     {getDatePicker()}
@@ -134,6 +142,10 @@ const styles = StyleSheet.create({
         backgroundColor: colors.secondary.dark,
         paddingHorizontal: 10,
         paddingVertical: 4,
+    },
+    textCustoRec: {
+        flex: 1,
+        fontSize: 25,
     }
 })
 
