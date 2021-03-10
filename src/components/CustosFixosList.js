@@ -13,21 +13,21 @@ const custosFixosJan = [
         desc: 'Conta Luz',
         valor: 100,
         pago: true,
-        dataPagamento: '2021-09-15'
+        data: '2021-09-15'
     },
     {
         id: Math.random(),
         desc: 'Conta Agua',
         valor: 100,
         pago: true,
-        dataPagamento: '2021-09-15'
+        data: '2021-09-15'
     },
     {
         id: Math.random(),
         desc: 'Telefone',
         valor: 100,
         pago: false,
-        dataPagamento: '2021-09-15'
+        data: '2021-09-15'
     },
 ]
 
@@ -75,7 +75,7 @@ const CustosFixosList = (props) => {
                         pago={item.pago}
                         desc={item.desc}
                         valor={item.valor}
-                        dataPagamento={item.dataPagamento} />}
+                        dataPagamento={item.data} />}
             />
             <BotaoAdd onOpenModal={() => setOpenModal(true)} />
         </View>
