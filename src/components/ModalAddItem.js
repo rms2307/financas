@@ -19,6 +19,7 @@ const ModalAddItem = (props) => {
     const [valor, setValor] = useState('')
     const [data, setData] = useState(new Date())
     const [repetirCusto, setRepetirCusto] = useState('')
+    const [numParcelas, setNumParcelas] = useState('')
 
     const [showDatePicker, setShowDatePicker] = useState(false)
 
@@ -27,13 +28,17 @@ const ModalAddItem = (props) => {
             id: Math.random(),
             desc: desc,
             valor: valor,
-            dataPagamento: data
+            data: data,
+            qtdParcelas: numParcelas,
+            parcelaAtual: 1,
         }
 
         props.onSave && props.onSave(newCusto)
         setDesc('')
         setValor('')
         setData(new Date())
+        setRepetirCusto('')
+        setNumParcelas('')
     }
 
     getDatePicker = () => {
@@ -83,6 +88,13 @@ const ModalAddItem = (props) => {
                             placeholder='Repetir'
                             value={repetirCusto}
                             onChangeText={qtd => setRepetirCusto(qtd)}
+                            keyboardType='numeric' />
+                    }
+                    {props.credito &&
+                        <TextInput style={[styles.input, { flex: 0.6 }]}
+                            placeholder='Nº parcelas'
+                            value={numParcelas}
+                            onChangeText={qtd => setNumParcelas(qtd)}
                             keyboardType='numeric' />
                     }
                 </View>

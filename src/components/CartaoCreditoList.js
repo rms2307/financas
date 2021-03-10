@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, FlatList, Dimensions } from 'react-native'
 
 import ItemCredito from './ItemCredito'
 import BotaoAdd from './BotaoAdd'
+import ModalAddItem from './ModalAddItem'
 import colors from '../common/colors'
 
 const custosDiversosJan = [
@@ -12,7 +13,7 @@ const custosDiversosJan = [
         valor: 100,
         qtdParcelas: 0,
         parcelaAtual: 0,
-        dataCompra: '2021-10-15'
+        data: '2021-10-15'
     },
     {
         id: Math.random(),
@@ -20,102 +21,7 @@ const custosDiversosJan = [
         valor: 100,
         qtdParcelas: 2,
         parcelaAtual: 1,
-        dataCompra: '2021-11-15'
-    },
-    {
-        id: Math.random(),
-        desc: 'Telefone',
-        valor: 100,
-
-        qtdParcelas: 2,
-        parcelaAtual: 1,
-        dataCompra: '2021-09-15'
-    },
-    {
-        id: Math.random(),
-        desc: 'Internet',
-        valor: 100,
-        qtdParcelas: 0,
-        parcelaAtual: 0,
-        dataCompra: '2021-10-10'
-    },
-    {
-        id: Math.random(),
-        desc: 'Seguro',
-        valor: 100,
-        qtdParcelas: 2,
-        parcelaAtual: 2,
-        dataCompra: '2021-10-20'
-    },
-    {
-        id: Math.random(),
-        desc: 'Curso',
-        valor: 100,
-        qtdParcelas: 2,
-        parcelaAtual: 2,
-    },
-    {
-        id: Math.random(),
-        desc: 'Conta Luz',
-        valor: 100,
-        qtdParcelas: 3,
-        parcelaAtual: 2,
-    },
-    {
-        id: Math.random(),
-        desc: 'Conta Agua',
-        valor: 100,
-        qtdParcelas: 1,
-        parcelaAtual: 2,
-    },
-    {
-        id: Math.random(),
-        desc: 'Telefone',
-        valor: 100,
-        qtdParcelas: 6,
-        parcelaAtual: 4,
-    },
-    {
-        id: Math.random(),
-        desc: 'Internet',
-        valor: 100,
-        qtdParcelas: 8,
-        parcelaAtual: 1,
-    },
-    {
-        id: Math.random(),
-        desc: 'Seguro',
-        valor: 100,
-        qtdParcelas: 6,
-        parcelaAtual: 2,
-    },
-    {
-        id: Math.random(),
-        desc: 'Curso',
-        valor: 100,
-        qtdParcelas: 2,
-        parcelaAtual: 2,
-    },
-    {
-        id: Math.random(),
-        desc: 'Telefone',
-        valor: 100,
-        qtdParcelas: 4,
-        parcelaAtual: 2,
-    },
-    {
-        id: Math.random(),
-        desc: 'Internet',
-        valor: 100,
-        qtdParcelas: 2,
-        parcelaAtual: 1,
-    },
-    {
-        id: Math.random(),
-        desc: 'Seguro',
-        valor: 100,
-        qtdParcelas: 0,
-        parcelaAtual: 0,
+        data: '2021-11-12'
     },
     {
         id: Math.random(),
@@ -123,32 +29,48 @@ const custosDiversosJan = [
         valor: 100,
         qtdParcelas: 2,
         parcelaAtual: 1,
-    },
-    {
-        id: Math.random(),
-        desc: 'Internet',
-        valor: 100,
-        qtdParcelas: 0,
-        parcelaAtual: 0,
-    },
-    {
-        id: Math.random(),
-        desc: 'Seguro',
-        valor: 100,
-        qtdParcelas: 2,
-        parcelaAtual: 2,
-        dataCompra: '2021-10-20'
-    },
+        data: '2021-09-11'
+    }
 ]
 
 const CartaoCreditoList = (props) => {
+    const [openModal, setOpenModal] = useState(false)
+    const [gastos, setGasto] = useState(custosDiversosJan)
+
+    const addCusto = (gasto) => {
+        if (!gasto.desc || !gasto.desc.trim()) {
+            Toast.show('Digite uma Descrição.', {
+                position: Toast.position.TOP,
+                containerStyle: { backgroundColor: 'red' },
+                textStyle: { fontSize: 20, fontWeight: 'bold' }
+            })
+            return
+        }
+        if (!gasto.valor || !gasto.valor.trim()) {
+            Toast.show('Digite um Valor.', {
+                position: Toast.position.TOP,
+                containerStyle: { backgroundColor: 'red' },
+                textStyle: { fontSize: 20, fontWeight: 'bold' }
+            })
+            return
+        }
+
+        setOpenModal(false)
+        setGasto(gastos.concat(gasto))
+    }
+
     return (
         <View style={styles.container}>
+            <ModalAddItem isVisible={openModal}
+                onCancel={() => setOpenModal(false)}
+                onSave={addCusto}
+                title={'Novo Gasto no Cartão'}
+                credito={true} />
             <View style={styles.containerTitle}>
                 <Text style={styles.title}>Total da Fatura: </Text>
                 <Text style={styles.money}>R$ 1200,00</Text>
             </View>
-            <FlatList data={custosDiversosJan}
+            <FlatList data={gastos}
                 keyExtractor={item => `${item.id}`}
                 renderItem={({ item }) =>
                     <ItemCredito
@@ -156,9 +78,9 @@ const CartaoCreditoList = (props) => {
                         valor={item.valor}
                         qtdParcelas={item.qtdParcelas}
                         parcelaAtual={item.parcelaAtual}
-                        dataCompra={item.dataCompra} />}
+                        dataCompra={item.data} />}
             />
-            <BotaoAdd />
+            <BotaoAdd onOpenModal={() => setOpenModal(true)} />
         </View>
     )
 }
