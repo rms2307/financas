@@ -1,8 +1,10 @@
-import React from 'react'
-import { View, Text, StyleSheet, FlatList, Dimensions } from 'react-native'
+import React, { useState } from 'react'
+import { View, Text, StyleSheet, FlatList } from 'react-native'
+import Toast from 'react-native-tiny-toast'
 
 import ItemCusto from './ItemCusto'
 import BotaoAdd from './BotaoAdd'
+import ModalAddItem from './ModalAddItem'
 import colors from '../common/colors'
 
 const custosDiversosJan = [
@@ -27,108 +29,45 @@ const custosDiversosJan = [
         pago: false,
         dataPagamento: '2021-09-15'
     },
-    {
-        id: Math.random(),
-        desc: 'Internet',
-        valor: 100,
-        pago: false,
-        dataPagamento: '2021-10-10'
-    },
-    {
-        id: Math.random(),
-        desc: 'Seguro',
-        valor: 100,
-        pago: true,
-        dataPagamento: '2021-10-20'
-    },
-    {
-        id: Math.random(),
-        desc: 'Curso',
-        valor: 100,
-        pago: false,
-    },
-    {
-        id: Math.random(),
-        desc: 'Conta Luz',
-        valor: 100,
-        pago: false,
-    },
-    {
-        id: Math.random(),
-        desc: 'Conta Agua',
-        valor: 100,
-        pago: false,
-    },
-    {
-        id: Math.random(),
-        desc: 'Telefone',
-        valor: 100,
-        pago: false,
-    },
-    {
-        id: Math.random(),
-        desc: 'Internet',
-        valor: 100,
-        pago: true,
-    },
-    {
-        id: Math.random(),
-        desc: 'Seguro',
-        valor: 100,
-        pago: false,
-    },
-    {
-        id: Math.random(),
-        desc: 'Curso',
-        valor: 100,
-        pago: false,
-    },
-    {
-        id: Math.random(),
-        desc: 'Telefone',
-        valor: 100,
-        pago: false,
-    },
-    {
-        id: Math.random(),
-        desc: 'Internet',
-        valor: 100,
-        pago: true,
-    },
-    {
-        id: Math.random(),
-        desc: 'Seguro',
-        valor: 100,
-        pago: false,
-    },
-    {
-        id: Math.random(),
-        desc: 'Telefone',
-        valor: 100,
-        pago: true,
-    },
-    {
-        id: Math.random(),
-        desc: 'Internet',
-        valor: 100,
-        pago: false,
-    },
-    {
-        id: Math.random(),
-        desc: 'Seguro',
-        valor: 100,
-        pago: false,
-    },
 ]
 
 const CustosDiversosList = (props) => {
+    const [openModal, setOpenModal] = useState(false)
+    const [custos, setCustos] = useState(custosDiversosJan)
+
+    const addCusto = (custo) => {
+        if (!custo.desc || !custo.desc.trim()) {
+            Toast.show('Digite uma Descrição.', {
+                position: Toast.position.TOP,
+                containerStyle: { backgroundColor: 'red' },
+                textStyle: { fontSize: 20, fontWeight: 'bold' }
+            })
+            return
+        }
+        if (!custo.valor || !custo.valor.trim()) {
+            Toast.show('Digite um Valor.', {
+                position: Toast.position.TOP,
+                containerStyle: { backgroundColor: 'red' },
+                textStyle: { fontSize: 20, fontWeight: 'bold' }
+            })
+            return
+        }
+
+        setOpenModal(false)
+        setCustos(custos.concat(custo))
+    }
+
     return (
         <View style={styles.container}>
+            <ModalAddItem isVisible={openModal}
+                onCancel={() => setOpenModal(false)}
+                onSave={addCusto}
+                title={'Novo Custo Diverso'} />
             <View style={styles.containerTitle}>
                 <Text style={styles.title}>Total: </Text>
                 <Text style={styles.money}>R$ 1200,00</Text>
             </View>
-            <FlatList data={custosDiversosJan}
+            <FlatList data={custos}
                 keyExtractor={item => `${item.id}`}
                 renderItem={({ item }) =>
                     <ItemCusto
@@ -137,7 +76,7 @@ const CustosDiversosList = (props) => {
                         valor={item.valor}
                         dataPagamento={item.dataPagamento} />}
             />
-            <BotaoAdd />
+            <BotaoAdd onOpenModal={() => setOpenModal(true)} />
         </View>
     )
 }

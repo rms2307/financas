@@ -26,7 +26,7 @@ const ModalAddItem = (props) => {
             id: Math.random(),
             desc: desc,
             valor: valor,
-            data: data
+            dataPagamento: data
         }
 
         props.onSave && props.onSave(newCusto)

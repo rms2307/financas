@@ -12,19 +12,22 @@ const custosFixosJan = [
         id: Math.random(),
         desc: 'Conta Luz',
         valor: 100,
-        pago: true
+        pago: true,
+        dataPagamento: '2021-09-15'
     },
     {
         id: Math.random(),
         desc: 'Conta Agua',
         valor: 100,
         pago: true,
+        dataPagamento: '2021-09-15'
     },
     {
         id: Math.random(),
         desc: 'Telefone',
         valor: 100,
         pago: false,
+        dataPagamento: '2021-09-15'
     },
 ]
 
@@ -34,18 +37,18 @@ const CustosFixosList = (props) => {
 
     const addCusto = (custo) => {
         if (!custo.desc || !custo.desc.trim()) {
-            Toast.show('Digite uma Descrição.',{
+            Toast.show('Digite uma Descrição.', {
                 position: Toast.position.TOP,
-                containerStyle: {backgroundColor: 'red'},
-                textStyle:{fontSize: 20, fontWeight: 'bold'}
+                containerStyle: { backgroundColor: 'red' },
+                textStyle: { fontSize: 20, fontWeight: 'bold' }
             })
             return
         }
         if (!custo.valor || !custo.valor.trim()) {
-            Toast.show('Digite um Valor.',{
+            Toast.show('Digite um Valor.', {
                 position: Toast.position.TOP,
-                containerStyle: {backgroundColor: 'red'},
-                textStyle:{fontSize: 20, fontWeight: 'bold'}
+                containerStyle: { backgroundColor: 'red' },
+                textStyle: { fontSize: 20, fontWeight: 'bold' }
             })
             return
         }
@@ -55,24 +58,26 @@ const CustosFixosList = (props) => {
     }
 
     return (
-        <>
-            <View style={styles.container}>
-                <ModalAddItem isVisible={openModal}
-                    onCancel={() => setOpenModal(false)}
-                    onSave={addCusto}
-                    title={'Novo Custo Fixo'} />
-                <View style={styles.containerTitle}>
-                    <Text style={styles.title}>Total: </Text>
-                    <Text style={styles.money}>R$ 1200,00</Text>
-                </View>
-                <FlatList data={custos}
-                    keyExtractor={item => `${item.id}`}
-                    renderItem={({ item }) => <ItemCusto pago={item.pago} desc={item.desc} valor={item.valor} />}
-                />
-                <BotaoAdd onOpenModal={() => setOpenModal(true)} />
+        <View style={styles.container}>
+            <ModalAddItem isVisible={openModal}
+                onCancel={() => setOpenModal(false)}
+                onSave={addCusto}
+                title={'Novo Custo Fixo'} />
+            <View style={styles.containerTitle}>
+                <Text style={styles.title}>Total: </Text>
+                <Text style={styles.money}>R$ 1200,00</Text>
             </View>
-        </>
-
+            <FlatList data={custos}
+                keyExtractor={item => `${item.id}`}
+                renderItem={({ item }) =>
+                    <ItemCusto
+                        pago={item.pago}
+                        desc={item.desc}
+                        valor={item.valor}
+                        dataPagamento={item.dataPagamento} />}
+            />
+            <BotaoAdd onOpenModal={() => setOpenModal(true)} />
+        </View>
     )
 }
 
