@@ -21,6 +21,14 @@ const CustosDiversosList = (props) => {
         setCustos(custos)
     }
 
+    const calcularTotal = () => {
+        const soma = (t, v) => t + v
+        const total = custos
+            ? custos.map(g => +g.valor || 0).reduce(soma)
+            : 0
+        return total
+    }
+
     const addCusto = async (custo) => {
         if (!custo.desc || !custo.desc.trim()) {
             Toast.show('Digite uma Descrição.', {
@@ -30,7 +38,7 @@ const CustosDiversosList = (props) => {
             })
             return
         }
-        if (!custo.valor || !custo.valor.trim()) {
+        if (!custo.valor) {
             Toast.show('Digite um Valor.', {
                 position: Toast.position.TOP,
                 containerStyle: { backgroundColor: 'red' },
@@ -51,7 +59,7 @@ const CustosDiversosList = (props) => {
                 title={'Novo Custo Diverso'} />
             <View style={styles.containerTitle}>
                 <Text style={styles.title}>Total: </Text>
-                <Text style={styles.money}>R$ 1200,00</Text>
+                <Text style={styles.money}>R$ {calcularTotal()}</Text>
             </View>
             <FlatList data={custos}
                 keyExtractor={item => `${item.id}`}
