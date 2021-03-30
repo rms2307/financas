@@ -6,7 +6,11 @@ import ItemCusto from './ItemCusto'
 import BotaoAdd from './BotaoAdd'
 import ModalAddItem from './ModalAddItem'
 import colors from '../common/colors'
-import { buscarCustosDiversosDoMes, cadastrarCustoDiverso } from '../services/diversoService'
+import numeroToMoeda from '../common/numeroToMoeda'
+import {
+    buscarCustosDiversosDoMes,
+    cadastrarCustoDiverso
+} from '../services/diversoService'
 
 const CustosDiversosList = (props) => {
     const [openModal, setOpenModal] = useState(false)
@@ -26,7 +30,7 @@ const CustosDiversosList = (props) => {
         const total = custos
             ? custos.map(g => +g.valor || 0).reduce(soma)
             : 0
-        return total
+        return numeroToMoeda(total)
     }
 
     const addCusto = async (custo) => {

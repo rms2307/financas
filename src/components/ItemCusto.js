@@ -5,6 +5,7 @@ import moment from 'moment'
 import 'moment/locale/pt-br'
 
 import colors from '../common/colors'
+import numeroToMoeda from '../common/numeroToMoeda'
 
 const ItemCusto = (props) => {
 
@@ -29,7 +30,7 @@ const ItemCusto = (props) => {
                 </View>
             </View>
             <Text style={[styles.money]}>
-                R$ {props.valor}
+                R$ {numeroToMoeda(props.valor)}
             </Text>
         </TouchableOpacity>
     )
