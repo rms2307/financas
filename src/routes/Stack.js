@@ -9,6 +9,7 @@ import CustosDiversos from '../components/CustosDiversosList'
 const StackNavigator = createStackNavigator()
 
 const Stack = (props) => {
+    const mesAtual = props.mesAtual
     return (
         <StackNavigator.Navigator initialRouteName={'Resumo'} headerMode='none'>
             <StackNavigator.Screen name='Resumo'
@@ -16,7 +17,7 @@ const Stack = (props) => {
                 {props => (
                     <MenuStack
                         {...props} cusFix='CustosFixos' cusDiv='CustosDiversos'>
-                        <Resumo />
+                        <Resumo mesAtual={mesAtual} />
                     </MenuStack>
                 )}
             </StackNavigator.Screen>
@@ -24,7 +25,7 @@ const Stack = (props) => {
                 {props => (
                     <MenuStack
                         {...props} res='Resumo' cusDiv='CustosDiversos'>
-                        <CustosFixos />
+                        <CustosFixos mesAtual={mesAtual} />
                     </MenuStack>
                 )}
             </StackNavigator.Screen>
@@ -32,7 +33,7 @@ const Stack = (props) => {
                 {props => (
                     <MenuStack
                         {...props} res='Resumo' cusFix='CustosFixos'>
-                        <CustosDiversos />
+                        <CustosDiversos mesAtual={mesAtual} />
                     </MenuStack>
                 )}
             </StackNavigator.Screen>

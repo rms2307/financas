@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, FlatList } from 'react-native'
 import Toast from 'react-native-tiny-toast'
 
@@ -6,36 +6,22 @@ import ItemCusto from './ItemCusto'
 import BotaoAdd from './BotaoAdd'
 import ModalAddItem from './ModalAddItem'
 import colors from '../common/colors'
-
-const custosDiversosJan = [
-    {
-        id: Math.random(),
-        desc: 'Conta Luz',
-        valor: 100,
-        pago: true,
-        data: '2021-10-15'
-    },
-    {
-        id: Math.random(),
-        desc: 'Conta Agua',
-        valor: 100,
-        pago: true,
-        data: '2021-11-15'
-    },
-    {
-        id: Math.random(),
-        desc: 'Telefone',
-        valor: 100,
-        pago: false,
-        data: '2021-09-15'
-    },
-]
+import { buscarCustosDiversosDoMes, cadastrarCustoDiverso } from '../services/diversoService'
 
 const CustosDiversosList = (props) => {
     const [openModal, setOpenModal] = useState(false)
-    const [custos, setCustos] = useState(custosDiversosJan)
+    const [custos, setCustos] = useState()
 
-    const addCusto = (custo) => {
+    useEffect(() => {
+        carregarCustos()
+    }, [props.mesAtual])
+
+    const carregarCustos = async () => {
+        const custos = await buscarCustosDiversosDoMes(props.mesAtual)
+        setCustos(custos)
+    }
+
+    const addCusto = async (custo) => {
         if (!custo.desc || !custo.desc.trim()) {
             Toast.show('Digite uma Descrição.', {
                 position: Toast.position.TOP,
@@ -52,9 +38,9 @@ const CustosDiversosList = (props) => {
             })
             return
         }
-
         setOpenModal(false)
-        setCustos(custos.concat(custo))
+        await cadastrarCustoDiverso(custo)
+        carregarCustos()
     }
 
     return (

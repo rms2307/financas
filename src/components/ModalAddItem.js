@@ -25,7 +25,6 @@ const ModalAddItem = (props) => {
 
     const add = () => {
         const newCusto = {
-            id: Math.random(),
             desc: desc,
             valor: valor,
             data: data,
