@@ -8,7 +8,6 @@ async function buscarCustosDiversosDoMes(mes) {
 }
 
 async function cadastrarCustoDiverso(custo) {
-
     return api.post(`/diversos`,
         {
             desc: custo.desc,
@@ -19,4 +18,12 @@ async function cadastrarCustoDiverso(custo) {
         .catch((err) => showError(err))
 }
 
-export { buscarCustosDiversosDoMes, cadastrarCustoDiverso }
+async function deletarCustoDiverso(id) {
+    try {
+        await api.delete(`/diversos/${id}`)
+    } catch (err) {
+        showError(err)
+    }
+}
+
+export { buscarCustosDiversosDoMes, cadastrarCustoDiverso, deletarCustoDiverso }

@@ -9,7 +9,8 @@ import colors from '../common/colors'
 import numeroToMoeda from '../common/numeroToMoeda'
 import {
     buscarCustosDiversosDoMes,
-    cadastrarCustoDiverso
+    cadastrarCustoDiverso,
+    deletarCustoDiverso,
 } from '../services/diversoService'
 
 const CustosDiversosList = (props) => {
@@ -55,6 +56,11 @@ const CustosDiversosList = (props) => {
         carregarCustos()
     }
 
+    const deletarCusto = async (custoId) => {        
+        await deletarCustoDiverso(custoId)
+        carregarCustos()
+    }
+
     return (
         <View style={styles.container}>
             <ModalAddItem isVisible={openModal}
@@ -69,10 +75,12 @@ const CustosDiversosList = (props) => {
                 keyExtractor={item => `${item.id}`}
                 renderItem={({ item }) =>
                     <ItemCusto
+                        id={item.id}
                         pago={item.pago}
                         desc={item.desc}
                         valor={item.valor}
-                        dataPagamento={item.data} />}
+                        dataPagamento={item.data}
+                        onDelete={deletarCusto} />}
             />
             <BotaoAdd onOpenModal={() => setOpenModal(true)} />
         </View>
