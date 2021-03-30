@@ -10,23 +10,27 @@ import {
     TouchableOpacity,
 } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker'
+import { TextInputMask } from 'react-native-masked-text'
 import moment from 'moment'
 
 import colors from '../common/colors'
+import { useRef } from 'react'
 
 const ModalAddItem = (props) => {
     const [desc, setDesc] = useState('')
     const [valor, setValor] = useState('')
     const [data, setData] = useState(new Date())
     const [repetirCusto, setRepetirCusto] = useState('')
-    const [numParcelas, setNumParcelas] = useState('')
-
+    const [numParcelas, setNumParcelas] = useState(1)
     const [showDatePicker, setShowDatePicker] = useState(false)
 
+    const inputValor = useRef(null)
+
     const add = () => {
+        const valorNumerico = inputValor.current.getRawValue()
         const newCusto = {
             desc: desc,
-            valor: valor,
+            valor: valorNumerico,
             data: data,
             qtdParcelas: numParcelas,
             parcelaAtual: 1,
@@ -76,11 +80,12 @@ const ModalAddItem = (props) => {
                         placeholder='Descrição'
                         value={desc}
                         onChangeText={desc => setDesc(desc)} />
-                    <TextInput style={styles.input}
+                    <TextInputMask style={styles.input}
+                        type={'money'}
                         placeholder='Valor (R$)'
                         value={valor}
                         onChangeText={valor => setValor(valor)}
-                        keyboardType='numeric'
+                        ref={inputValor}
                     />
                     {props.fixo &&
                         <TextInput style={[styles.input, { flex: 0.5 }]}
