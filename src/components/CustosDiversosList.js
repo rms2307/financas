@@ -5,6 +5,7 @@ import Toast from 'react-native-tiny-toast'
 import ItemCusto from './ItemCusto'
 import BotaoAdd from './BotaoAdd'
 import ModalAddItem from './ModalAddItem'
+import NoContent from './NoContent'
 import colors from '../common/colors'
 import numeroToMoeda from '../common/numeroToMoeda'
 import {
@@ -77,7 +78,7 @@ const CustosDiversosList = (props) => {
     return (
         <View style={styles.container}>
             <ModalAddItem isVisible={openModal}
-                onCancel={() => {setOpenModal(false), setCusto()}}
+                onCancel={() => { setOpenModal(false), setCusto() }}
                 onSave={addCusto}
                 onEdit={editarCusto}
                 custo={custo}
@@ -86,6 +87,7 @@ const CustosDiversosList = (props) => {
                 <Text style={styles.title}>Total: </Text>
                 <Text style={styles.money}>R$ {calcularTotal()}</Text>
             </View>
+            {!custos && <NoContent />}
             <FlatList data={custos}
                 keyExtractor={item => `${item.id}`}
                 renderItem={({ item }) =>
