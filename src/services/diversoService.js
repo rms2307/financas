@@ -18,6 +18,20 @@ async function cadastrarCustoDiverso(custo) {
         .catch((err) => showError(err))
 }
 
+async function editarCustoDiverso(custo) {
+    try {
+        await api.put(`/diversos`,
+            {
+                id: custo.id,
+                desc: custo.desc,
+                valor: custo.valor,
+                data: custo.data
+            })
+    } catch (err) {
+        showError(err)
+    }
+}
+
 async function deletarCustoDiverso(id) {
     try {
         await api.delete(`/diversos/${id}`)
@@ -26,4 +40,9 @@ async function deletarCustoDiverso(id) {
     }
 }
 
-export { buscarCustosDiversosDoMes, cadastrarCustoDiverso, deletarCustoDiverso }
+export {
+    buscarCustosDiversosDoMes,
+    cadastrarCustoDiverso,
+    deletarCustoDiverso,
+    editarCustoDiverso,
+}

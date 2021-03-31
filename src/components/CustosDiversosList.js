@@ -11,11 +11,13 @@ import {
     buscarCustosDiversosDoMes,
     cadastrarCustoDiverso,
     deletarCustoDiverso,
+    editarCustoDiverso,
 } from '../services/diversoService'
 
 const CustosDiversosList = (props) => {
     const [openModal, setOpenModal] = useState(false)
     const [custos, setCustos] = useState()
+    const [custo, setCusto] = useState()
 
     useEffect(() => {
         carregarCustos()
@@ -34,8 +36,8 @@ const CustosDiversosList = (props) => {
         return numeroToMoeda(total)
     }
 
-    const addCusto = async (custo) => {
-        if (!custo.desc || !custo.desc.trim()) {
+    const addCusto = async (newCusto) => {
+        if (!newCusto.desc || !newCusto.desc.trim()) {
             Toast.show('Digite uma Descrição.', {
                 position: Toast.position.TOP,
                 containerStyle: { backgroundColor: 'red' },
@@ -43,7 +45,7 @@ const CustosDiversosList = (props) => {
             })
             return
         }
-        if (!custo.valor) {
+        if (!newCusto.valor) {
             Toast.show('Digite um Valor.', {
                 position: Toast.position.TOP,
                 containerStyle: { backgroundColor: 'red' },
@@ -52,11 +54,22 @@ const CustosDiversosList = (props) => {
             return
         }
         setOpenModal(false)
-        await cadastrarCustoDiverso(custo)
+        await cadastrarCustoDiverso(newCusto)
         carregarCustos()
     }
 
-    const deletarCusto = async (custoId) => {        
+    const abrirModalEdit = (custoDiverso) => {
+        setCusto(custoDiverso)
+        setOpenModal(true)
+    }
+
+    const editarCusto = async (newCusto) => {
+        setOpenModal(false)
+        await editarCustoDiverso(newCusto)
+        carregarCustos()
+    }
+
+    const deletarCusto = async (custoId) => {
         await deletarCustoDiverso(custoId)
         carregarCustos()
     }
@@ -64,9 +77,11 @@ const CustosDiversosList = (props) => {
     return (
         <View style={styles.container}>
             <ModalAddItem isVisible={openModal}
-                onCancel={() => setOpenModal(false)}
+                onCancel={() => {setOpenModal(false), setCusto()}}
                 onSave={addCusto}
-                title={'Novo Custo Diverso'} />
+                onEdit={editarCusto}
+                custo={custo}
+                title={'Custo Diverso'} />
             <View style={styles.containerTitle}>
                 <Text style={styles.title}>Total: </Text>
                 <Text style={styles.money}>R$ {calcularTotal()}</Text>
@@ -80,7 +95,8 @@ const CustosDiversosList = (props) => {
                         desc={item.desc}
                         valor={item.valor}
                         dataPagamento={item.data}
-                        onDelete={deletarCusto} />}
+                        onDelete={deletarCusto}
+                        onEdit={abrirModalEdit} />}
             />
             <BotaoAdd onOpenModal={() => setOpenModal(true)} />
         </View>

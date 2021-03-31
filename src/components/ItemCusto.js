@@ -11,6 +11,8 @@ import numeroToMoeda from '../common/numeroToMoeda'
 
 const ItemCusto = (props) => {
 
+    const swipeable = useRef(null)
+
     const dataPagamento = props.dataPagamento || moment()
     const dia = moment(dataPagamento).locale('pt-br').format('DD')
     const mes = moment(dataPagamento).locale('pt-br').format('MMM')
@@ -19,18 +21,41 @@ const ItemCusto = (props) => {
         ? { backgroundColor: colors.outros }
         : null
 
-    const renderActionEditar = () => {
+    const renderActionRemover = () => {
         return (
             <TouchableOpacity style={styles.action}
-                onPress={() => props.onDelete && props.onDelete(props.id)}>
-                <Icon name="trash" size={30} color='#FFF' />
+                onPress={
+                    () => { props.onDelete && props.onDelete(props.id), swipeable.current.close() }
+                }>
+                <Icon name="trash" size={25} color='#FFF' />
+            </TouchableOpacity>
+        )
+    }
+
+    const renderActionEditar = () => {
+        const custo = {
+            id: props.id,
+            desc: props.desc,
+            valor: props.valor,
+            data: props.dataPagamento
+        }
+        return (
+            <TouchableOpacity style={[styles.action, { backgroundColor: colors.receitas }]}
+                onPress={
+                    () => { props.onEdit && props.onEdit(custo), swipeable.current.close() }
+                }>
+                <Icon name="edit" size={25} color='#FFF' />
             </TouchableOpacity>
         )
     }
 
     return (
         <Swipeable
-            renderRightActions={renderActionEditar}
+            renderRightActions={renderActionRemover}
+            renderLeftActions={renderActionEditar}
+            overshootLeft={false}
+            overshootRight={false}
+            ref={swipeable}
         >
             <TouchableOpacity style={styles.container}>
                 <View style={styles.labelsContainer}>
@@ -84,19 +109,11 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     action: {
-        backgroundColor: 'red',
+        backgroundColor: colors.despesas,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-end',
-        paddingHorizontal: 20
-    },
-    excludeIcon: {
-        marginLeft: 10
-    },
-    excludeText: {
-        color: '#FFF',
-        fontSize: 20,
-        margin: 10
+        paddingHorizontal: 15
     }
 })
 

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useRef, useEffect } from 'react'
 import {
     Modal,
     View,
@@ -14,7 +15,6 @@ import { TextInputMask } from 'react-native-masked-text'
 import moment from 'moment'
 
 import colors from '../common/colors'
-import { useRef } from 'react'
 
 const ModalAddItem = (props) => {
     const [desc, setDesc] = useState('')
@@ -23,6 +23,13 @@ const ModalAddItem = (props) => {
     const [repetirCusto, setRepetirCusto] = useState('')
     const [numParcelas, setNumParcelas] = useState(1)
     const [showDatePicker, setShowDatePicker] = useState(false)
+
+    useEffect(() => {
+        if (!props.custo) return
+        setDesc(props.custo.desc)
+        setValor(+props.custo.valor)
+        setData(new Date(props.custo.data))
+    }, [props.custo])
 
     const inputValor = useRef(null)
 
@@ -42,6 +49,34 @@ const ModalAddItem = (props) => {
         setData(new Date())
         setRepetirCusto('')
         setNumParcelas('')
+    }
+
+    const edit = () => {
+        const valorNumerico = inputValor.current.getRawValue()
+        const newCusto = {
+            id: props.custo && props.custo.id,
+            desc: desc,
+            valor: valorNumerico,
+            data: data,
+            qtdParcelas: numParcelas,
+            parcelaAtual: 1,
+        }
+
+        props.onEdit && props.onEdit(newCusto)
+        setDesc('')
+        setValor('')
+        setData(new Date())
+        setRepetirCusto('')
+        setNumParcelas('')
+    }
+
+    const cancel = () => {
+        setDesc('')
+        setValor('')
+        setData(new Date())
+        setRepetirCusto('')
+        setNumParcelas('')
+        props.onCancel()
     }
 
     getDatePicker = () => {
@@ -69,12 +104,14 @@ const ModalAddItem = (props) => {
 
     return (
         <Modal transparent={true} visible={props.isVisible}
-            onRequestClose={props.onCancel} animationType='fade' >
-            <TouchableWithoutFeedback onPress={props.onCancel}>
+            onRequestClose={cancel} animationType='fade' >
+            <TouchableWithoutFeedback onPress={cancel}>
                 <View style={styles.background} ></View>
             </TouchableWithoutFeedback>
             <View style={styles.container}>
-                <Text style={styles.header}>{props.title}</Text>
+                <Text style={styles.header}>
+                    {props.custo ? 'Editar ' : 'Cadastrar '}{props.title}
+                </Text>
                 <View style={{ flexDirection: 'row', padding: 10 }}>
                     <TextInput style={styles.input}
                         placeholder='Descrição'
@@ -104,12 +141,12 @@ const ModalAddItem = (props) => {
                 </View>
                 <View style={styles.containerDatePicker}>
                     {getDatePicker()}
-                    <TouchableOpacity onPress={add}>
-                        <Text style={styles.btn}>Adicionar</Text>
+                    <TouchableOpacity onPress={props.custo ? edit : add}>
+                        <Text style={styles.btn}>Salvar</Text>
                     </TouchableOpacity>
                 </View>
             </View>
-            <TouchableWithoutFeedback onPress={props.onCancel}>
+            <TouchableWithoutFeedback onPress={cancel}>
                 <View style={styles.background} ></View>
             </TouchableWithoutFeedback>
         </Modal>
