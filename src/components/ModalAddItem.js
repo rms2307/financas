@@ -28,7 +28,7 @@ const ModalAddItem = (props) => {
     useEffect(() => {
         if (!props.custo) return
         setDesc(props.custo.desc)
-        setValor(+props.custo.valor)
+        setValor(props.custo.valor)
         setData(new Date(props.custo.data))
     }, [props.custo])
 
@@ -38,7 +38,7 @@ const ModalAddItem = (props) => {
         const valorNumerico = inputValor.current.getRawValue()
         const newCusto = {
             desc: desc,
-            valor: +valorNumerico,
+            valor: valorNumerico,
             data: data,
             qtdParcelas: numParcelas,
             parcelaAtual: 1,
@@ -74,7 +74,7 @@ const ModalAddItem = (props) => {
         const newCusto = {
             id: props.custo && props.custo.id,
             desc: desc,
-            valor: +valorNumerico,
+            valor: valorNumerico,
             data: data,
             qtdParcelas: numParcelas,
             parcelaAtual: 1,

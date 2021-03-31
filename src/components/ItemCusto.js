@@ -36,7 +36,7 @@ const ItemCusto = (props) => {
         const custo = {
             id: props.id,
             desc: props.desc,
-            valor: props.valor,
+            valor: 'R$' + props.valor,
             data: props.dataPagamento
         }
         return (
