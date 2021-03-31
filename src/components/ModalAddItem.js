@@ -10,6 +10,7 @@ import {
     Platform,
     TouchableOpacity,
 } from 'react-native'
+import Toast from 'react-native-tiny-toast'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { TextInputMask } from 'react-native-masked-text'
 import moment from 'moment'
@@ -37,10 +38,27 @@ const ModalAddItem = (props) => {
         const valorNumerico = inputValor.current.getRawValue()
         const newCusto = {
             desc: desc,
-            valor: valorNumerico,
+            valor: +valorNumerico,
             data: data,
             qtdParcelas: numParcelas,
             parcelaAtual: 1,
+        }
+
+        if (!newCusto.desc || !newCusto.desc.trim()) {
+            Toast.show('Digite uma Descrição.', {
+                position: Toast.position.TOP,
+                containerStyle: { backgroundColor: 'red' },
+                textStyle: { fontSize: 20, fontWeight: 'bold' }
+            })
+            return
+        }
+        if (!newCusto.valor) {
+            Toast.show('Digite um Valor.', {
+                position: Toast.position.TOP,
+                containerStyle: { backgroundColor: 'red' },
+                textStyle: { fontSize: 20, fontWeight: 'bold' }
+            })
+            return
         }
 
         props.onSave && props.onSave(newCusto)
@@ -56,10 +74,27 @@ const ModalAddItem = (props) => {
         const newCusto = {
             id: props.custo && props.custo.id,
             desc: desc,
-            valor: valorNumerico,
+            valor: +valorNumerico,
             data: data,
             qtdParcelas: numParcelas,
             parcelaAtual: 1,
+        }
+
+        if (!newCusto.desc || !newCusto.desc.trim()) {
+            Toast.show('Digite uma Descrição.', {
+                position: Toast.position.TOP,
+                containerStyle: { backgroundColor: 'red' },
+                textStyle: { fontSize: 20, fontWeight: 'bold' }
+            })
+            return
+        }
+        if (!newCusto.valor) {
+            Toast.show('Digite um Valor.', {
+                position: Toast.position.TOP,
+                containerStyle: { backgroundColor: 'red' },
+                textStyle: { fontSize: 20, fontWeight: 'bold' }
+            })
+            return
         }
 
         props.onEdit && props.onEdit(newCusto)

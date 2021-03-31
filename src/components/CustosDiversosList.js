@@ -43,22 +43,6 @@ const CustosDiversosList = (props) => {
     }
 
     const addCusto = async (newCusto) => {
-        if (!newCusto.desc || !newCusto.desc.trim()) {
-            Toast.show('Digite uma Descrição.', {
-                position: Toast.position.TOP,
-                containerStyle: { backgroundColor: 'red' },
-                textStyle: { fontSize: 20, fontWeight: 'bold' }
-            })
-            return
-        }
-        if (!newCusto.valor) {
-            Toast.show('Digite um Valor.', {
-                position: Toast.position.TOP,
-                containerStyle: { backgroundColor: 'red' },
-                textStyle: { fontSize: 20, fontWeight: 'bold' }
-            })
-            return
-        }
         setOpenModal(false)
         setCarregando(true)
         await cadastrarCustoDiverso(newCusto)
