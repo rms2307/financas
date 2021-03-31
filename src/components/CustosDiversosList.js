@@ -6,6 +6,7 @@ import ItemCusto from './ItemCusto'
 import BotaoAdd from './BotaoAdd'
 import ModalAddItem from './ModalAddItem'
 import NoContent from './NoContent'
+import Carregando from './Carregando'
 import colors from '../common/colors'
 import numeroToMoeda from '../common/numeroToMoeda'
 import {
@@ -19,13 +20,17 @@ const CustosDiversosList = (props) => {
     const [openModal, setOpenModal] = useState(false)
     const [custos, setCustos] = useState()
     const [custo, setCusto] = useState()
+    const [carregando, setCarregando] = useState(false)
 
     useEffect(() => {
         carregarCustos()
     }, [props.mesAtual])
 
     const carregarCustos = async () => {
+        setCustos()
+        setCarregando(true)
         const custos = await buscarCustosDiversosDoMes(props.mesAtual)
+        setCarregando(false)
         setCustos(custos)
     }
 
@@ -55,6 +60,7 @@ const CustosDiversosList = (props) => {
             return
         }
         setOpenModal(false)
+        setCarregando(true)
         await cadastrarCustoDiverso(newCusto)
         carregarCustos()
     }
@@ -66,11 +72,13 @@ const CustosDiversosList = (props) => {
 
     const editarCusto = async (newCusto) => {
         setOpenModal(false)
+        setCarregando(true)
         await editarCustoDiverso(newCusto)
         carregarCustos()
     }
 
     const deletarCusto = async (custoId) => {
+        setCarregando(true)
         await deletarCustoDiverso(custoId)
         carregarCustos()
     }
@@ -87,7 +95,8 @@ const CustosDiversosList = (props) => {
                 <Text style={styles.title}>Total: </Text>
                 <Text style={styles.money}>R$ {calcularTotal()}</Text>
             </View>
-            {!custos && <NoContent />}
+            <Carregando carregando={carregando} />
+            {!custos && !carregando && <NoContent />}
             <FlatList data={custos}
                 keyExtractor={item => `${item.id}`}
                 renderItem={({ item }) =>
