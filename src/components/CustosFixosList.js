@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, FlatList, Alert } from 'react-native'
-import Toast from 'react-native-tiny-toast'
 
 import ItemCusto from './ItemCusto'
 import BotaoAdd from './BotaoAdd'
