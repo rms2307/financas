@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, FlatList } from 'react-native'
-import Toast from 'react-native-tiny-toast'
 
 import ItemCusto from './ItemCusto'
 import BotaoAdd from './BotaoAdd'
-import ModalAddItem from './ModalAddItem'
+import ModalCustoDiverso from './ModalCustoDiverso'
 import NoContent from './NoContent'
 import Carregando from './Carregando'
 import colors from '../common/colors'
-import numeroToMoeda from '../common/numeroToMoeda'
+import calcularTotal from '../common/calcularTotal'
 import {
     buscarCustosDiversosDoMes,
     cadastrarCustoDiverso,
@@ -34,14 +33,6 @@ const CustosDiversosList = (props) => {
         setCustos(custos)
     }
 
-    const calcularTotal = () => {
-        const soma = (t, v) => t + v
-        const total = custos
-            ? custos.map(g => +g.valor || 0).reduce(soma)
-            : 0
-        return numeroToMoeda(total)
-    }
-
     const addCusto = async (newCusto) => {
         setOpenModal(false)
         setCarregando(true)
@@ -61,23 +52,22 @@ const CustosDiversosList = (props) => {
         carregarCustos()
     }
 
-    const deletarCusto = async (custoId) => {
+    const deletarCusto = async (custo) => {
         setCarregando(true)
-        await deletarCustoDiverso(custoId)
+        await deletarCustoDiverso(custo.id)
         carregarCustos()
     }
 
     return (
         <View style={styles.container}>
-            <ModalAddItem isVisible={openModal}
+            <ModalCustoDiverso isVisible={openModal}
                 onCancel={() => { setOpenModal(false), setCusto() }}
                 onSave={addCusto}
                 onEdit={editarCusto}
-                custo={custo}
-                title={'Custo Diverso'} />
+                custo={custo} />
             <View style={styles.containerTitle}>
                 <Text style={styles.title}>Total: </Text>
-                <Text style={styles.money}>R$ {calcularTotal()}</Text>
+                <Text style={styles.money}>R$ {calcularTotal(custos)}</Text>
             </View>
             <Carregando carregando={carregando} />
             {!custos && !carregando && <NoContent />}
@@ -85,13 +75,14 @@ const CustosDiversosList = (props) => {
                 keyExtractor={item => `${item.id}`}
                 renderItem={({ item }) =>
                     <ItemCusto
-                        id={item.id}
                         pago={item.pago}
                         desc={item.desc}
                         valor={item.valor}
-                        dataPagamento={item.data}
+                        data={item.data}
+                        custo={item}
                         onDelete={deletarCusto}
-                        onEdit={abrirModalEdit} />}
+                        onEdit={abrirModalEdit} 
+                    />}
             />
             <BotaoAdd onOpenModal={() => setOpenModal(true)} />
         </View>
