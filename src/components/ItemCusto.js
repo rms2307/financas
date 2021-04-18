@@ -13,7 +13,7 @@ const ItemCusto = (props) => {
 
     const swipeable = useRef(null)
 
-    const dataPagamento = props.dataPagamento || moment()
+    const dataPagamento = props.data || moment()
     const dia = moment(dataPagamento).locale('pt-br').format('DD')
     const mes = moment(dataPagamento).locale('pt-br').format('MMM')
 
@@ -25,7 +25,7 @@ const ItemCusto = (props) => {
         return (
             <TouchableOpacity style={styles.action}
                 onPress={
-                    () => { props.onDelete && props.onDelete(props.id), swipeable.current.close() }
+                    () => { props.onDelete && props.onDelete(props.custo), swipeable.current.close() }
                 }>
                 <Icon name="trash" size={25} color='#FFF' />
             </TouchableOpacity>
@@ -33,16 +33,10 @@ const ItemCusto = (props) => {
     }
 
     const renderActionEditar = () => {
-        const custo = {
-            id: props.id,
-            desc: props.desc,
-            valor: 'R$' + props.valor,
-            data: props.dataPagamento
-        }
         return (
             <TouchableOpacity style={[styles.action, { backgroundColor: colors.receitas }]}
                 onPress={
-                    () => { props.onEdit && props.onEdit(custo), swipeable.current.close() }
+                    () => { props.onEdit && props.onEdit(props.custo), swipeable.current.close() }
                 }>
                 <Icon name="edit" size={25} color='#FFF' />
             </TouchableOpacity>
