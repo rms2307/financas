@@ -1,26 +1,22 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, FlatList, Alert } from 'react-native'
+import { View, Text, StyleSheet, FlatList } from 'react-native'
 
-import ItemCusto from './ItemCusto'
-import BotaoAdd from './BotaoAdd'
-import colors from '../common/colors'
-import ModalCustoFixo from './ModalCustoFixo'
-import ModalDeletarCustoFixo from './ModalDeletarCustoFixo'
-import NoContent from './NoContent'
-import Carregando from './Carregando'
-import calcularTotal from '../common/calcularTotal'
+import ItemCusto from '../../components/ItemCusto'
+import BotaoAdd from '../../components/BotaoAdd'
+import ModalCustoDiverso from '../CustoDiverso/ModalCustoDiverso'
+import NoContent from '../../components/NoContent'
+import Carregando from '../../components/Carregando'
+import colors from '../../common/colors'
+import calcularTotal from '../../common/calcularTotal'
 import {
-    buscarCustosFixoDoMes,
-    cadastrarCustoFixo,
-    editarCustoFixo,
-    deletarCustoFixoMesAtual,
-    deletarCustoFixoProximosMeses,
-    deletarCustoFixoTodosMeses
-} from '../services/fixoService'
+    buscarCustosDiversosDoMes,
+    cadastrarCustoDiverso,
+    deletarCustoDiverso,
+    editarCustoDiverso,
+} from '../../services/diversoService'
 
-const CustosFixosList = (props) => {
+const CustosDiversosList = (props) => {
     const [openModal, setOpenModal] = useState(false)
-    const [openModalDelete, setOpenModalDelete] = useState(false)
     const [custos, setCustos] = useState()
     const [custo, setCusto] = useState()
     const [carregando, setCarregando] = useState(false)
@@ -32,7 +28,7 @@ const CustosFixosList = (props) => {
     const carregarCustos = async () => {
         setCustos()
         setCarregando(true)
-        const custos = await buscarCustosFixoDoMes(props.mesAtual)
+        const custos = await buscarCustosDiversosDoMes(props.mesAtual)
         setCarregando(false)
         setCustos(custos)
     }
@@ -40,64 +36,35 @@ const CustosFixosList = (props) => {
     const addCusto = async (newCusto) => {
         setOpenModal(false)
         setCarregando(true)
-        await cadastrarCustoFixo(newCusto)
-        setCusto()
+        await cadastrarCustoDiverso(newCusto)
         carregarCustos()
     }
 
-    const abrirModalEdit = (custo) => {
-        setCusto(custo)
+    const abrirModalEdit = (custoDiverso) => {
+        setCusto(custoDiverso)
         setOpenModal(true)
-    }
-
-    const abrirModalDelete = (custo) => {
-        setCusto(custo)
-        setOpenModalDelete(true)
     }
 
     const editarCusto = async (newCusto) => {
         setOpenModal(false)
         setCarregando(true)
-        await editarCustoFixo(newCusto)
-        setCusto()
+        await editarCustoDiverso(newCusto)
         carregarCustos()
     }
 
-    const deletarCustoAtual = async (custo) => {
+    const deletarCusto = async (custo) => {
         setCarregando(true)
-        await deletarCustoFixoMesAtual(custo.id)
-        setCusto()
-        carregarCustos()
-    }
-
-    const deletarCustoProximos = async (custo) => {
-        setCarregando(true)
-        await deletarCustoFixoProximosMeses(custo.id)
-        setCusto()
-        carregarCustos()
-    }
-
-    const deletarCustoTodos = async (custo) => {
-        setCarregando(true)
-        await deletarCustoFixoTodosMeses(custo.id)
-        setCusto()
+        await deletarCustoDiverso(custo.id)
         carregarCustos()
     }
 
     return (
         <View style={styles.container}>
-            <ModalCustoFixo isVisible={openModal}
+            <ModalCustoDiverso isVisible={openModal}
                 onCancel={() => { setOpenModal(false), setCusto() }}
                 onSave={addCusto}
                 onEdit={editarCusto}
                 custo={custo} />
-            <ModalDeletarCustoFixo isVisible={openModalDelete}
-                onCancel={() => { setOpenModalDelete(false), setCusto() }}
-                custo={custo}
-                onDeleteAtual={deletarCustoAtual}
-                onDeleteProximos={deletarCustoProximos}
-                onDeleteTodos={deletarCustoTodos}
-            />
             <View style={styles.containerTitle}>
                 <Text style={styles.title}>Total: </Text>
                 <Text style={styles.money}>R$ {calcularTotal(custos)}</Text>
@@ -108,13 +75,13 @@ const CustosFixosList = (props) => {
                 keyExtractor={item => `${item.id}`}
                 renderItem={({ item }) =>
                     <ItemCusto
-                        data={item.data}
-                        desc={item.custoFixoDescricao.desc}
-                        valor={item.valor}
                         pago={item.pago}
+                        desc={item.desc}
+                        valor={item.valor}
+                        data={item.data}
                         custo={item}
-                        onEdit={abrirModalEdit}
-                        onDelete={abrirModalDelete}
+                        onDelete={deletarCusto}
+                        onEdit={abrirModalEdit} 
                     />}
             />
             <BotaoAdd onOpenModal={() => setOpenModal(true)} />
@@ -147,4 +114,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default CustosFixosList
+export default CustosDiversosList

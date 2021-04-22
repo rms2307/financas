@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
 } from 'react-native'
 
-import colors from '../common/colors'
+import colors from '../../common/colors'
 
 const ModalDeletarCustoFixo = (props) => {
 

@@ -4,9 +4,6 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import moment from 'moment'
 import 'moment/locale/pt-br'
 
-import colors from '../common/colors'
-import { ceil } from 'react-native-reanimated'
-
 const ItemCredito = (props) => {
 
     const dataCompra = props.dataCompra || moment()

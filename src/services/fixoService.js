@@ -8,7 +8,6 @@ async function buscarCustosFixoDoMes(mes) {
 }
 
 async function cadastrarCustoFixo(custo) {
-    console.log(custo)
     return api.post(`/fixos`, custo)
         .then((response) => response.data)
         .catch((err) => showError(err))

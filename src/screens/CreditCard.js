@@ -7,7 +7,7 @@ import {
 
 import Header from '../components/Header'
 import ModalMeses from '../components/ModalMeses'
-import CartaoCredito from '../components/CartaoCreditoList'
+import CartaoCredito from '../screens/CartaoCredito/CartaoCreditoList'
 
 import colors from '../common/colors'
 

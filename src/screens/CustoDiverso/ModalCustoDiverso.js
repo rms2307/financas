@@ -14,33 +14,24 @@ import Toast from 'react-native-tiny-toast'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { TextInputMask } from 'react-native-masked-text'
 import moment from 'moment'
-import CheckBox from '@react-native-community/checkbox'
 
-import colors from '../common/colors'
+import colors from '../../common/colors'
 
-const ModalCustoFixo = (props) => {
+const ModalCustoDiverso = (props) => {
     const [desc, setDesc] = useState('')
     const [valor, setValor] = useState('')
     const [data, setData] = useState(new Date())
-    const [repetirCusto, setRepetirCusto] = useState(1)
-    const [alterarApenasMesAtual, setAlterarApenasMesAtual] = useState(true)
-    const [alterarProximosMeses, setAlterarProximosMeses] = useState(false)
-    const [alterarTodosMeses, setAlterarTodosMeses] = useState(false)
     const [showDatePicker, setShowDatePicker] = useState(false)
 
     const setInitialState = () => {
         setDesc('')
         setValor('')
         setData(new Date())
-        setRepetirCusto(1)
-        setAlterarApenasMesAtual(true)
-        setAlterarProximosMeses(false)
-        setAlterarTodosMeses(false)
     }
 
     useEffect(() => {
         if (!props.custo) return
-        setDesc(props.custo.custoFixoDescricao.desc)
+        setDesc(props.custo.desc)
         setValor(props.custo.valor)
         setData(new Date(props.custo.data))
     }, [props.custo])
@@ -52,8 +43,7 @@ const ModalCustoFixo = (props) => {
         const newCusto = {
             desc: desc,
             valor: valorNumerico,
-            data: data,
-            repetirCusto: repetirCusto,
+            data: data
         }
 
         if (!newCusto.desc || !newCusto.desc.trim()) {
@@ -81,13 +71,9 @@ const ModalCustoFixo = (props) => {
         const valorNumerico = !isNaN(valor) ? valor : inputValor.current.getRawValue()
         const newCusto = {
             id: props.custo && props.custo.id,
-            descId: props.custo.custoFixoDescricao.id,
             desc: desc,
             valor: valorNumerico,
-            data: data,
-            alterarApenasMesAtual: alterarApenasMesAtual,
-            alterarProximosMeses: alterarProximosMeses,
-            alterarTodosMeses: alterarTodosMeses
+            data: data
         }
 
         if (!newCusto.desc || !newCusto.desc.trim()) {
@@ -147,7 +133,7 @@ const ModalCustoFixo = (props) => {
             </TouchableWithoutFeedback>
             <View style={styles.container}>
                 <Text style={styles.header}>
-                    {props.custo ? 'Editar ' : 'Cadastrar '}Custo Fixo
+                    {props.custo ? 'Editar ' : 'Cadastrar '}Custo Diverso
                 </Text>
                 <View style={{ flexDirection: 'row', padding: 10 }}>
                     <TextInput style={styles.input}
@@ -161,54 +147,7 @@ const ModalCustoFixo = (props) => {
                         onChangeText={valor => setValor(valor)}
                         ref={inputValor}
                     />
-                    {!props.custo &&
-                        < TextInput style={[styles.input, { flex: 0.5 }]}
-                            placeholder='Repetir'
-                            value={repetirCusto + ''}
-                            onChangeText={qtd => setRepetirCusto(qtd)}
-                            keyboardType='numeric' />
-                    }
                 </View>
-                {props.custo &&
-                    <>
-                        <View style={styles.containerCheckbox}>
-                            <CheckBox
-                                disabled={false}
-                                value={alterarApenasMesAtual}
-                                onValueChange={(value) => {
-                                    setAlterarApenasMesAtual(value),
-                                        setAlterarProximosMeses(false),
-                                        setAlterarTodosMeses(false)
-                                }}
-                            />
-                            <Text style={styles.textCheckbox}>Editar atual</Text>
-                        </View>
-                        <View style={styles.containerCheckbox}>
-                            <CheckBox
-                                disabled={false}
-                                value={alterarProximosMeses}
-                                onValueChange={(value) => {
-                                    setAlterarProximosMeses(value)
-                                    setAlterarApenasMesAtual(false),
-                                        setAlterarTodosMeses(false)
-                                }}
-                            />
-                            <Text style={styles.textCheckbox}>Editar proximos</Text>
-                        </View>
-                        <View style={styles.containerCheckbox}>
-                            <CheckBox
-                                disabled={false}
-                                value={alterarTodosMeses}
-                                onValueChange={(value) => {
-                                    setAlterarTodosMeses(value),
-                                        setAlterarProximosMeses(false),
-                                        setAlterarApenasMesAtual(false)
-                                }}
-                            />
-                            <Text style={styles.textCheckbox}>Editar todos</Text>
-                        </View>
-                    </>
-                }
                 <View style={styles.containerDatePicker}>
                     {getDatePicker()}
                     <TouchableOpacity onPress={props.custo ? edit : add}>
@@ -280,4 +219,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default ModalCustoFixo
+export default ModalCustoDiverso

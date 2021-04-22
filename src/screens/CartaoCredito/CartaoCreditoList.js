@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import { View, Text, StyleSheet, FlatList, Dimensions } from 'react-native'
 
 import ItemCredito from './ItemCredito'
-import BotaoAdd from './BotaoAdd'
-import ModalAddItem from './ModalAddItem'
-import colors from '../common/colors'
+import BotaoAdd from '../../components/BotaoAdd'
+import ModalCartaoCredito from './ModalCartaoCredito'
+import colors from '../../common/colors'
 
 const custosDiversosJan = [
     {
@@ -61,7 +61,7 @@ const CartaoCreditoList = (props) => {
 
     return (
         <View style={styles.container}>
-            <ModalAddItem isVisible={openModal}
+            <ModalCartaoCredito isVisible={openModal}
                 onCancel={() => setOpenModal(false)}
                 onSave={addCusto}
                 title={'Novo Gasto no Cartão'}

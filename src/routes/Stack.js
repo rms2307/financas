@@ -3,8 +3,8 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 import MenuStack from '../components/MenuStack'
 import Resumo from '../components/Resumo'
-import CustosFixos from '../components/CustosFixosList'
-import CustosDiversos from '../components/CustosDiversosList'
+import CustosFixos from '../screens/CustoFixo/CustosFixosList'
+import CustosDiversos from '../screens/CustoDiverso/CustosDiversosList'
 
 const StackNavigator = createStackNavigator()
 
