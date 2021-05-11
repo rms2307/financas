@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import { useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import {
     Modal,
     View,
@@ -8,59 +7,46 @@ import {
     TouchableWithoutFeedback,
     TextInput,
     Platform,
-    TouchableOpacity,
+    TouchableOpacity
 } from 'react-native'
 import Toast from 'react-native-tiny-toast'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { TextInputMask } from 'react-native-masked-text'
 import moment from 'moment'
-import CheckBox from '@react-native-community/checkbox'
+import { Picker } from '@react-native-picker/picker';
 
 import colors from '../../common/colors'
 
 const ModalCartaoCredito = (props) => {
     const [desc, setDesc] = useState('')
     const [valor, setValor] = useState('')
+    const [valorParcela, setValorParcela] = useState('')
     const [data, setData] = useState(new Date())
-    const [repetirCusto, setRepetirCusto] = useState(1)
-    const [numParcelas, setNumParcelas] = useState(1)
+    const [numeroDeParcelas, setNumeroDeParcelas] = useState(1)
     const [showDatePicker, setShowDatePicker] = useState(false)
-    const [alterarApenasMesAtual, setAlterarApenasMesAtual] = useState(true)
-    const [alterarProximosMeses, setAlterarProximosMeses] = useState(false)
-    const [alterarTodosMeses, setAlterarTodosMeses] = useState(false)
+    const [cartao, setCartao] = useState(0);
 
     const setInitialState = () => {
         setDesc('')
         setValor('')
+        setValorParcela('')
         setData(new Date())
-        setRepetirCusto(1)
-        setNumParcelas(1)
-        setAlterarApenasMesAtual(true)
-        setAlterarProximosMeses(false)
-        setAlterarTodosMeses(false)
+        setNumeroDeParcelas(1)
     }
-
-    useEffect(() => {
-        if (!props.custo) return
-        setDesc(props.custo.desc)
-        setValor(props.custo.valor)
-        setData(new Date(props.custo.data))
-        console.log(props.custo)
-    }, [props.custo])
 
     const inputValor = useRef(null)
 
     const add = () => {
         const valorNumerico = inputValor.current.getRawValue()
-        const newCusto = {
+        const newGasto = {
             desc: desc,
             valor: valorNumerico,
-            data: data,
-            repetirCusto: repetirCusto,
-            qtdParcelas: numParcelas,
+            dataCompra: data,
+            numeroDeParcelas: numeroDeParcelas,
+            cartaoCreditoId: cartao
         }
 
-        if (!newCusto.desc || !newCusto.desc.trim()) {
+        if (!newGasto.desc || !newGasto.desc.trim()) {
             Toast.show('Digite uma Descrição.', {
                 position: Toast.position.TOP,
                 containerStyle: { backgroundColor: 'red' },
@@ -68,7 +54,7 @@ const ModalCartaoCredito = (props) => {
             })
             return
         }
-        if (!newCusto.valor) {
+        if (!newGasto.valor) {
             Toast.show('Digite um Valor.', {
                 position: Toast.position.TOP,
                 containerStyle: { backgroundColor: 'red' },
@@ -76,44 +62,7 @@ const ModalCartaoCredito = (props) => {
             })
             return
         }
-
-        props.onSave && props.onSave(newCusto)
-        setInitialState()
-    }
-
-    const edit = () => {
-        const valorNumerico = inputValor.current.getRawValue()
-        const newCusto = {
-            id: props.custo && props.custo.id,
-            descId: props.custo.custoFixoDescricao.id,
-            desc: desc,
-            valor: valorNumerico,
-            data: data,
-            repetirCusto: repetirCusto,
-            qtdParcelas: numParcelas,
-            alterarApenasMesAtual: alterarApenasMesAtual,
-            alterarProximosMeses: alterarProximosMeses,
-            alterarTodosMeses: alterarProximosMeses
-        }
-
-        if (!newCusto.desc || !newCusto.desc.trim()) {
-            Toast.show('Digite uma Descrição.', {
-                position: Toast.position.TOP,
-                containerStyle: { backgroundColor: 'red' },
-                textStyle: { fontSize: 20, fontWeight: 'bold' }
-            })
-            return
-        }
-        if (!newCusto.valor) {
-            Toast.show('Digite um Valor.', {
-                position: Toast.position.TOP,
-                containerStyle: { backgroundColor: 'red' },
-                textStyle: { fontSize: 20, fontWeight: 'bold' }
-            })
-            return
-        }
-
-        props.onEdit && props.onEdit(newCusto)
+        props.onSave && props.onSave(newGasto)
         setInitialState()
     }
 
@@ -145,6 +94,25 @@ const ModalCartaoCredito = (props) => {
         return datePicker
     }
 
+    getBandeiraString = (bandeiraId) => {
+        switch (bandeiraId) {
+            case 1:
+                return "Visa"
+            case 2:
+                return "Master Card"
+            case 3:
+                return "Elo"
+            case 4:
+                return "Hipercard"
+            case 5:
+                return "Diners Club"
+            case 6:
+                return "American Express"
+            default:
+                return "Bandeira"
+        }
+    }
+
     return (
         <Modal transparent={true} visible={props.isVisible}
             onRequestClose={cancel} animationType='fade' >
@@ -153,7 +121,7 @@ const ModalCartaoCredito = (props) => {
             </TouchableWithoutFeedback>
             <View style={styles.container}>
                 <Text style={styles.header}>
-                    {props.custo ? 'Editar ' : 'Cadastrar '}{props.title}
+                    {props.gasto ? 'Editar Gasto ' : 'Cadastrar Gasto '}
                 </Text>
                 <View style={{ flexDirection: 'row', padding: 10 }}>
                     <TextInput style={styles.input}
@@ -167,66 +135,33 @@ const ModalCartaoCredito = (props) => {
                         onChangeText={valor => setValor(valor)}
                         ref={inputValor}
                     />
-                    {props.fixo &&
-                        <TextInput style={[styles.input, { flex: 0.5 }]}
-                            placeholder='Repetir'
-                            value={repetirCusto + ''}
-                            onChangeText={qtd => setRepetirCusto(qtd)}
-                            keyboardType='numeric' />
-                    }
-                    {props.credito &&
-                        <TextInput style={[styles.input, { flex: 0.6 }]}
-                            placeholder='Nº parcelas'
-                            value={numParcelas + ''}
-                            onChangeText={qtd => setNumParcelas(qtd)}
-                            keyboardType='numeric' />
-
-                    }
+                    <TextInput style={[styles.input, { flex: 0.6 }]}
+                        placeholder='Nº parcelas'
+                        value={numeroDeParcelas + ''}
+                        onChangeText={qtd => setNumeroDeParcelas(qtd)}
+                        keyboardType='numeric' />
                 </View>
-                {props.fixo &&
-                    <>
-                        <View style={styles.containerCheckbox}>
-                            <CheckBox
-                                disabled={false}
-                                value={alterarApenasMesAtual}
-                                onValueChange={(value) => {
-                                    setAlterarApenasMesAtual(value),
-                                        setAlterarProximosMeses(false),
-                                        setAlterarTodosMeses(false)
-                                }}
+                <View>
+                    <Picker
+                        itemStyle={styles.cartaoItemPicker}
+                        selectedValue={cartao}
+                        style={styles.cartaoPicker}
+                        onValueChange={(itemValue, itemIndex) => setCartao(itemValue)}
+                    >
+                        <Picker.Item label="Escolha um Cartão" value={0} />
+                        {props.cartoes && props.cartoes.map(c => (
+                            <Picker.Item
+                                style={styles.cartaoItemPicker}
+                                key={c.id}
+                                label={getBandeiraString(c.bandeira)}
+                                value={c.id}
                             />
-                            <Text style={styles.textCheckbox}>Editar atual</Text>
-                        </View>
-                        <View style={styles.containerCheckbox}>
-                            <CheckBox
-                                disabled={false}
-                                value={alterarProximosMeses}
-                                onValueChange={(value) => {
-                                    setAlterarProximosMeses(value)
-                                    setAlterarApenasMesAtual(false),
-                                        setAlterarTodosMeses(false)
-                                }}
-                            />
-                            <Text style={styles.textCheckbox}>Editar proximos</Text>
-
-                        </View>
-                        <View style={styles.containerCheckbox}>
-                            <CheckBox
-                                disabled={false}
-                                value={alterarTodosMeses}
-                                onValueChange={(value) => {
-                                    setAlterarTodosMeses(value),
-                                        setAlterarProximosMeses(false),
-                                        setAlterarApenasMesAtual(false)
-                                }}
-                            />
-                            <Text style={styles.textCheckbox}>Editar todos</Text>
-                        </View>
-                    </>
-                }
+                        ))}
+                    </Picker>
+                </View>
                 <View style={styles.containerDatePicker}>
                     {getDatePicker()}
-                    <TouchableOpacity onPress={props.custo ? edit : add}>
+                    <TouchableOpacity onPress={props.gasto ? edit : add}>
                         <Text style={styles.btn}>Salvar</Text>
                     </TouchableOpacity>
                 </View>
@@ -291,6 +226,16 @@ const styles = StyleSheet.create({
     },
     textCustoRec: {
         flex: 1,
+        fontSize: 25,
+    },
+    cartaoPicker:
+    {
+        height: 50,
+        flexDirection: 'row',
+        fontSize: 50,
+    },
+    cartaoItemPicker:
+    {
         fontSize: 25,
     }
 })

@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { View, Text, StyleSheet, FlatList, Dimensions } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { View, Text, StyleSheet, FlatList } from 'react-native'
 
 import ItemCredito from './ItemCredito'
 import BotaoAdd from '../../components/BotaoAdd'
@@ -7,12 +7,16 @@ import ModalCartaoCredito from './ModalCartaoCredito'
 import Carregando from '../../components/Carregando'
 import colors from '../../common/colors'
 import calcularTotal from '../../common/calcularTotal'
-import { buscarFaturaDoMes } from '../../services/creditoService'
-import { useEffect } from 'react'
+import {
+    buscarFaturaDoMes,
+    cadastrarGastoNoCartao,
+    buscarCartoes
+} from '../../services/creditoService'
 
 const CartaoCreditoList = (props) => {
     const [openModal, setOpenModal] = useState(false)
     const [fatura, setFatura] = useState()
+    const [cartoes, setCartoes] = useState()
     const [carregando, setCarregando] = useState(false)
 
     useEffect(() => {
@@ -27,13 +31,27 @@ const CartaoCreditoList = (props) => {
         setFatura(fatura)
     }
 
+    const openModalAsync = async () => {
+        setCarregando(true)
+        const cartoes = await buscarCartoes()
+        setOpenModal(true)
+        setCartoes(cartoes)
+        setCarregando(false)
+    }
+
+    const addGasto = async (newGasto) => {
+        setOpenModal(false)
+        setCarregando(true)
+        await cadastrarGastoNoCartao(newGasto)
+        carregarFatura()
+    }
+
     return (
         <View style={styles.container}>
             <ModalCartaoCredito isVisible={openModal}
-                onCancel={() => { setOpenModal(false), setFatura() }}
-                onSave={() => console.log('salvar')}
-                title={'Novo Gasto no Cartão'}
-                credito={true} />
+                onCancel={() => { setOpenModal(false) }}
+                onSave={addGasto}
+                cartoes={cartoes} />
             <View style={styles.containerTitle}>
                 <Text style={styles.title}>Total da Fatura: </Text>
                 <Text style={styles.money}>R$ {calcularTotal(fatura)}</Text>
@@ -49,7 +67,7 @@ const CartaoCreditoList = (props) => {
                         parcelaAtual={item.numeroDaParcela}
                         dataCompra={item.cartaoCreditoCompra.dataCompra} />}
             />
-            <BotaoAdd onOpenModal={() => setOpenModal(true)} />
+            <BotaoAdd onOpenModal={() => openModalAsync()} />
         </View>
     )
 }
