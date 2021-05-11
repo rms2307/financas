@@ -4,6 +4,8 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import moment from 'moment'
 import 'moment/locale/pt-br'
 
+import numeroToMoeda from '../../common/numeroToMoeda'
+
 const ItemCredito = (props) => {
 
     const dataCompra = props.dataCompra || moment()
@@ -19,13 +21,15 @@ const ItemCredito = (props) => {
                 </View>
                 <View style={styles.parcelasContainer}>
                     <Text style={styles.title}>{props.desc}</Text>
-                    {props.qtdParcelas
-                        ? <Text style={styles.textParcela}>{props.parcelaAtual} / {props.qtdParcelas}</Text>
+                    {props.qtdParcelas > 1
+                        ? <Text style={styles.textParcela}>
+                            {props.parcelaAtual} / {props.qtdParcelas}
+                        </Text>
                         : null}
                 </View>
             </View>
             <Text style={[styles.money]}>
-                R$ {props.valor}
+                R$ {numeroToMoeda(props.valorDaParcela)}
             </Text>
         </TouchableOpacity>
     )

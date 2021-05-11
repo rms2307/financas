@@ -4,81 +4,50 @@ import { View, Text, StyleSheet, FlatList, Dimensions } from 'react-native'
 import ItemCredito from './ItemCredito'
 import BotaoAdd from '../../components/BotaoAdd'
 import ModalCartaoCredito from './ModalCartaoCredito'
+import Carregando from '../../components/Carregando'
 import colors from '../../common/colors'
-
-const custosDiversosJan = [
-    {
-        id: Math.random(),
-        desc: 'Conta Luz',
-        valor: 100,
-        qtdParcelas: 0,
-        parcelaAtual: 0,
-        data: '2021-10-15'
-    },
-    {
-        id: Math.random(),
-        desc: 'Conta Agua',
-        valor: 100,
-        qtdParcelas: 2,
-        parcelaAtual: 1,
-        data: '2021-11-12'
-    },
-    {
-        id: Math.random(),
-        desc: 'Telefone',
-        valor: 100,
-        qtdParcelas: 2,
-        parcelaAtual: 1,
-        data: '2021-09-11'
-    }
-]
+import calcularTotal from '../../common/calcularTotal'
+import { buscarFaturaDoMes } from '../../services/creditoService'
+import { useEffect } from 'react'
 
 const CartaoCreditoList = (props) => {
     const [openModal, setOpenModal] = useState(false)
-    const [gastos, setGasto] = useState(custosDiversosJan)
+    const [fatura, setFatura] = useState()
+    const [carregando, setCarregando] = useState(false)
 
-    const addCusto = (gasto) => {
-        if (!gasto.desc || !gasto.desc.trim()) {
-            Toast.show('Digite uma Descrição.', {
-                position: Toast.position.TOP,
-                containerStyle: { backgroundColor: 'red' },
-                textStyle: { fontSize: 20, fontWeight: 'bold' }
-            })
-            return
-        }
-        if (!gasto.valor || !gasto.valor.trim()) {
-            Toast.show('Digite um Valor.', {
-                position: Toast.position.TOP,
-                containerStyle: { backgroundColor: 'red' },
-                textStyle: { fontSize: 20, fontWeight: 'bold' }
-            })
-            return
-        }
+    useEffect(() => {
+        carregarFatura()
+    }, [props.mesAtual])
 
-        setOpenModal(false)
-        setGasto(gastos.concat(gasto))
+    const carregarFatura = async () => {
+        setFatura()
+        setCarregando(true)
+        const fatura = await buscarFaturaDoMes(props.mesAtual)
+        setCarregando(false)
+        setFatura(fatura)
     }
 
     return (
         <View style={styles.container}>
             <ModalCartaoCredito isVisible={openModal}
-                onCancel={() => setOpenModal(false)}
-                onSave={addCusto}
+                onCancel={() => { setOpenModal(false), setFatura() }}
+                onSave={() => console.log('salvar')}
                 title={'Novo Gasto no Cartão'}
                 credito={true} />
             <View style={styles.containerTitle}>
                 <Text style={styles.title}>Total da Fatura: </Text>
-                <Text style={styles.money}>R$ 1200,00</Text>
+                <Text style={styles.money}>R$ {calcularTotal(fatura)}</Text>
             </View>
-            <FlatList data={gastos}
+            <Carregando carregando={carregando} />
+            <FlatList data={fatura}
                 keyExtractor={item => `${item.id}`}
                 renderItem={({ item }) =>
                     <ItemCredito
-                        desc={item.desc}
-                        valor={item.valor}
-                        qtdParcelas={item.qtdParcelas}
-                        parcelaAtual={item.parcelaAtual}
-                        dataCompra={item.data} />}
+                        desc={item.cartaoCreditoCompra.desc}
+                        valorDaParcela={item.valorParcela}
+                        qtdParcelas={item.cartaoCreditoCompra.qtdDeParcelas}
+                        parcelaAtual={item.numeroDaParcela}
+                        dataCompra={item.cartaoCreditoCompra.dataCompra} />}
             />
             <BotaoAdd onOpenModal={() => setOpenModal(true)} />
         </View>
