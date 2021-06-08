@@ -13,7 +13,7 @@ import Toast from 'react-native-tiny-toast'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { TextInputMask } from 'react-native-masked-text'
 import moment from 'moment'
-import { Picker } from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker'
 
 import colors from '../../common/colors'
 
@@ -24,7 +24,7 @@ const ModalCartaoCredito = (props) => {
     const [data, setData] = useState(new Date())
     const [numeroDeParcelas, setNumeroDeParcelas] = useState(1)
     const [showDatePicker, setShowDatePicker] = useState(false)
-    const [cartao, setCartao] = useState(0);
+    const [cartao, setCartao] = useState(0)
 
     const setInitialState = () => {
         setDesc('')
@@ -32,6 +32,7 @@ const ModalCartaoCredito = (props) => {
         setValorParcela('')
         setData(new Date())
         setNumeroDeParcelas(1)
+        setCartao(0)
     }
 
     const inputValor = useRef(null)
@@ -62,6 +63,15 @@ const ModalCartaoCredito = (props) => {
             })
             return
         }
+        if (newGasto.cartaoCreditoId == undefined || newGasto.cartaoCreditoId == 0) {
+            Toast.show('Escolha um Cartão.', {
+                position: Toast.position.TOP,
+                containerStyle: { backgroundColor: 'red' },
+                textStyle: { fontSize: 20, fontWeight: 'bold' }
+            })
+            return
+        }
+
         props.onSave && props.onSave(newGasto)
         setInitialState()
     }
@@ -148,7 +158,9 @@ const ModalCartaoCredito = (props) => {
                         style={styles.cartaoPicker}
                         onValueChange={(itemValue, itemIndex) => setCartao(itemValue)}
                     >
-                        <Picker.Item label="Escolha um Cartão" value={0} />
+                        <Picker.Item style={styles.cartaoItemPicker}
+                            label="Escolha um Cartão:" value={0}
+                        />
                         {props.cartoes && props.cartoes.map(c => (
                             <Picker.Item
                                 style={styles.cartaoItemPicker}
@@ -236,7 +248,7 @@ const styles = StyleSheet.create({
     },
     cartaoItemPicker:
     {
-        fontSize: 25,
+        fontSize: 20,
     }
 })
 
