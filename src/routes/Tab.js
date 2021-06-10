@@ -39,7 +39,9 @@ const Tab = (props) => {
                         activeTintColor: colors.primary.main,
                         inactiveTintColor: colors.primary.main,
                         showLabel: false,
-                    }} initialRouteName='Month'>
+                    }}
+
+                    initialRouteName='Month'>
                     <TabNavigator.Screen name='Month' component={Month} />
                     <TabNavigator.Screen name='CreditCard' component={CreditCard} />
                 </TabNavigator.Navigator>
