@@ -21,7 +21,10 @@ const Auth = (props) => {
     return (
         <ImageBackground source={backgroundImage} style={styles.background}>
             <View style={styles.container}>
-                <Text style={styles.title}>Finanças</Text>
+                <View style={styles.titleContainer}>
+                    <Text style={styles.title}>MY</Text>
+                    <Text style={styles.title}>WALLET</Text>
+                </View>
                 <View style={styles.formContainer}>
                     <AuthInput icon='user' placeholder='Nome de Usuário'
                         value={userName}
@@ -46,13 +49,13 @@ const Auth = (props) => {
                                 CRIAR CONTAR
                             </Text>
                         </View>
-                        <TouchableOpacity onPress={() => console.log('esqueceu senha')}>
-                            <View style={styles.buttonLikeText}>
-                                <Text style={styles.buttonText}>
-                                    Esqueceu a senha?
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => console.log('esqueceu senha')}>
+                        <View style={styles.buttonLikeText}>
+                            <Text style={styles.buttonText}>
+                                Esqueceu a senha?
                             </Text>
-                            </View>
-                        </TouchableOpacity>
+                        </View>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -68,15 +71,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     title: {
-        color: '#FFF',
+        color: colors.primary.contrastText,
         fontWeight: 'bold',
-        fontSize: 55,
-        marginTop: 30
+        fontSize: 50,
+        fontFamily: "Righteous",
     },
-    subtitle: {
-        color: '#FFF',
-        fontSize: 25,
-        textAlign: 'center',
+    titleContainer: {
+        marginTop: 50,
+        justifyContent: 'flex-start',
+        alignItems: 'center'
     },
     container: {
         flex: 1,
@@ -92,12 +95,13 @@ const styles = StyleSheet.create({
     },
     buttonLogin: {
         backgroundColor: colors.primary.main,
-        marginTop: 5,
+        marginTop: 16,
         padding: 10,
         alignItems: 'center'
     },
     buttonSignup: {
-        backgroundColor: colors.primary.main,
+        borderWidth: 3,
+        borderColor: colors.primary.main,
         padding: 10,
         alignItems: 'center',
     },

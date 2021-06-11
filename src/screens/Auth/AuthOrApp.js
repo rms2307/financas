@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { View, Text } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
+import moment from 'moment'
 
 import api from '../../services/api'
 
@@ -15,14 +16,22 @@ const AuthOrApp = (props) => {
             try {
                 userData = JSON.parse(userDataJson)
             } catch (e) {
-                console.log('Erro => AuthOrApp')
+                console.log('Erro => AsyncStorage')
                 // Erro
             }
-            
-            if (userData && userData.accessToken) {
-                api.defaults.headers.common['Authorization'] = `bearer ${userData.accessToken}`
-                console.log(userData)
-                navigation.navigate('Tab', userData)
+            userData = null
+            if (userData && userData.accessToken && userData.expiraEm) {
+                const hoje = moment().format('YYYY-MM-DD HH:mm:ss')
+                const dtExpira = moment().format(userData.expiraEm)
+
+                if (hoje > dtExpira) {
+                    // Token expirado
+                    navigation.navigate('Auth')
+                } else {
+
+                    api.defaults.headers.common['Authorization'] = `bearer ${userData.accessToken}`
+                    navigation.navigate('Tab', userData)
+                }
             } else {
                 navigation.navigate('Auth')
             }

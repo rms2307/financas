@@ -32,6 +32,8 @@
 		23ED4F49BCDB4B338B05D9B1 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 740B8795053346CC923FCA9C /* Octicons.ttf */; };
 		A2D4E73089BA4147A52DF751 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 938977C0E10546A7AA0695B0 /* SimpleLineIcons.ttf */; };
 		381C29BB794B4B6FAB259C36 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1B01E4646C444D4585512BCC /* Zocial.ttf */; };
+		15CC2CC7F65049E1B7249E07 /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21802D13F4FA448FB41FEF1A /* Lato-Light.ttf */; };
+		450BB1511EF44D8CA6B2CFBD /* Righteous.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EAF9D7AAE9F84E98A41B8849 /* Righteous.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +85,8 @@
 		740B8795053346CC923FCA9C /* Octicons.ttf */ = {isa = PBXFileReference; name = "Octicons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		938977C0E10546A7AA0695B0 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; name = "SimpleLineIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		1B01E4646C444D4585512BCC /* Zocial.ttf */ = {isa = PBXFileReference; name = "Zocial.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		21802D13F4FA448FB41FEF1A /* Lato-Light.ttf */ = {isa = PBXFileReference; name = "Lato-Light.ttf"; path = "../assets/fonts/Lato-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		EAF9D7AAE9F84E98A41B8849 /* Righteous.ttf */ = {isa = PBXFileReference; name = "Righteous.ttf"; path = "../assets/fonts/Righteous.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -209,6 +213,8 @@
 				740B8795053346CC923FCA9C /* Octicons.ttf */,
 				938977C0E10546A7AA0695B0 /* SimpleLineIcons.ttf */,
 				1B01E4646C444D4585512BCC /* Zocial.ttf */,
+				21802D13F4FA448FB41FEF1A /* Lato-Light.ttf */,
+				EAF9D7AAE9F84E98A41B8849 /* Righteous.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -368,6 +374,8 @@
 				23ED4F49BCDB4B338B05D9B1 /* Octicons.ttf in Resources */,
 				A2D4E73089BA4147A52DF751 /* SimpleLineIcons.ttf in Resources */,
 				381C29BB794B4B6FAB259C36 /* Zocial.ttf in Resources */,
+				15CC2CC7F65049E1B7249E07 /* Lato-Light.ttf in Resources */,
+				450BB1511EF44D8CA6B2CFBD /* Righteous.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
