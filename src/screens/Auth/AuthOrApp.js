@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react'
-import { View, Text } from 'react-native'
+import { View, ActivityIndicator } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import moment from 'moment'
 
-import { refreshToken } from '../../services/authService'
+import Carregando from '../../components/Carregando'
 
+import { refreshToken } from '../../services/authService'
 import api from '../../services/api'
+import colors from '../../common/colors'
 
 
 const AuthOrApp = (props) => {
@@ -31,7 +33,7 @@ const AuthOrApp = (props) => {
                     // Token expirado
 
                     const user = await refreshToken(userData.accessToken, userData.refreshToken)
-                    user ? navigation.navigate('Tab', user) : navigation.navigate('Auth')                    
+                    user ? navigation.navigate('Tab', user) : navigation.navigate('Auth')
                 } else {
 
                     api.defaults.headers.common['Authorization'] = `bearer ${userData.accessToken}`
@@ -46,8 +48,8 @@ const AuthOrApp = (props) => {
     })
 
     return (
-        <View>
-            <Text>AuthOrApp</Text>
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+            <ActivityIndicator size="large" color={colors.outros} />
         </View>
     )
 }
