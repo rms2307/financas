@@ -3,7 +3,10 @@ import { View, Text } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import moment from 'moment'
 
+import { refreshToken } from '../../services/authService'
+
 import api from '../../services/api'
+
 
 const AuthOrApp = (props) => {
     const { navigation } = props
@@ -26,7 +29,9 @@ const AuthOrApp = (props) => {
 
                 if (hoje > dtExpira) {
                     // Token expirado
-                    navigation.navigate('Auth')
+
+                    const user = await refreshToken(userData.accessToken, userData.refreshToken)
+                    user ? navigation.navigate('Tab', user) : navigation.navigate('Auth')                    
                 } else {
 
                     api.defaults.headers.common['Authorization'] = `bearer ${userData.accessToken}`
