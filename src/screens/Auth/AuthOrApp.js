@@ -24,7 +24,7 @@ const AuthOrApp = (props) => {
                 console.log('Erro => AsyncStorage')
                 // Erro
             }
-            userData = null
+
             if (userData && userData.accessToken && userData.expiraEm) {
                 const hoje = moment().format('YYYY-MM-DD HH:mm:ss')
                 const dtExpira = moment().format(userData.expiraEm)

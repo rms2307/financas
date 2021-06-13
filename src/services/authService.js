@@ -21,11 +21,7 @@ const signin = async (userName, password) => {
 }
 
 const refreshToken = async (accessToken, refreshToken) => {
-
-    console.log(accessToken)
-    console.log(refreshToken)
     try {
-
         const response = await api.post(`/auth/refresh`,
             {
                 accessToken,
@@ -41,5 +37,20 @@ const refreshToken = async (accessToken, refreshToken) => {
     }
 }
 
-export { signin, refreshToken }
+const signup = async (userName, password, confirmPassword, nomeCompleto) => {
+    try {
+        const response = await api.post(`/users`,
+            {
+                userName,
+                password,
+                confirmPassword,
+                nomeCompleto
+            })
+
+        return response.data
+    } catch (e) {
+        showError(e)
+    }
+}
+export { signin, refreshToken, signup }
 

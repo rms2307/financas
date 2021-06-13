@@ -3,19 +3,30 @@ import { ImageBackground, View, Text, StyleSheet, TouchableOpacity, Dimensions }
 
 import AuthInput from '../../components/AuthInput'
 
-import { signin } from '../../services/authService'
+import { signin, signup } from '../../services/authService'
 import backgroundImage from '../../../assets/imgs/auth-background.png'
 import colors from '../../common/colors'
 
 const Auth = (props) => {
+    const [cadastrarNovoUser, setCadastrarNovoUser] = useState(false)
     const [userName, setUserName] = useState('robson.moraes')
     const [password, setPassword] = useState('teste123')
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const [nomeCompleto, setNomeCompleto] = useState('')
     const { navigation } = props
 
     const login = async () => {
         const user = await signin(userName.toLowerCase(), password)
 
         user && navigation.navigate('Tab', user)
+    }
+
+    const cadastrar = async () => {
+        const user = await signup(userName.toLowerCase(), password, confirmPassword, nomeCompleto)
+
+        if(user) {
+            await login()
+        }
     }
 
     return (
@@ -26,6 +37,12 @@ const Auth = (props) => {
                     <Text style={styles.title}>WALLET</Text>
                 </View>
                 <View style={styles.formContainer}>
+                    {cadastrarNovoUser &&
+                        <AuthInput icon='user' placeholder='Nome Completo'
+                            value={nomeCompleto}
+                            style={styles.input}
+                            onChangeText={(nome) => setNomeCompleto(nome)} />
+                    }
                     <AuthInput icon='user' placeholder='Nome de Usuário'
                         value={userName}
                         style={styles.input}
@@ -34,16 +51,22 @@ const Auth = (props) => {
                         value={password}
                         style={styles.input}
                         onChangeText={(pass) => setPassword(pass)} />
-                    <TouchableOpacity onPress={login}>
+                    {cadastrarNovoUser &&
+                        <AuthInput icon='lock' placeholder='Confirmar Senha' secureTextEntry={true}
+                            value={confirmPassword}
+                            style={styles.input}
+                            onChangeText={(pass) => setConfirmPassword(pass)} />
+                    }
+                    <TouchableOpacity onPress={cadastrarNovoUser ? cadastrar : login}>
                         <View style={styles.buttonLogin}>
                             <Text style={styles.buttonText}>
-                                ENTRAR
+                                {cadastrarNovoUser ? 'SALVAR' : 'ENTRAR'}
                             </Text>
                         </View>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.signupContainer} >
-                    <TouchableOpacity onPress={() => console.log('cadastrar')}>
+                    <TouchableOpacity onPress={() => setCadastrarNovoUser(true)}>
                         <View style={styles.buttonSignup}>
                             <Text style={styles.buttonText}>
                                 CRIAR CONTAR
