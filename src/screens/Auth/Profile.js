@@ -1,9 +1,12 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 
-const Profile = () => {
+import Header from '../../components/Header'
+
+const Profile = (props) => {
     return (
         <View>
+            <Header {...props} />
             <Text>Profile</Text>
         </View>
     )

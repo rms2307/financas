@@ -27,7 +27,7 @@ const Tab = (props) => {
     return (
         <SafeAreaView style={{ flexGrow: 1 }}>
             <StatusBar backgroundColor={colors.primary.dark} />
-            <Header {...props} mesAtual={mesAtual.mes} onOpenModal={() => setOpenModal(true)} />
+            <Header {...props} showBtnMeses={true} mesAtual={mesAtual.mes} onOpenModal={() => setOpenModal(true)} />
             <ModalMeses isVisible={openModal}
                 onCancel={() => setOpenModal(false)}
                 onSetMesAtual={(mes) => onSetMesAtual(mes)} />

@@ -5,14 +5,17 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import colors from '../common/colors'
 
 const Header = (props) => {
+    const { navigation } = props
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.user} onPress={() => console.log('menu')}>
+            <TouchableOpacity style={styles.user} onPress={() => navigation.openDrawer()}>
                 <Icon style={styles.icon} name={'bars'} size={35} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.btn} onPress={props.onOpenModal}>
-                <Text style={styles.text}>{props.mesAtual}</Text>
-            </TouchableOpacity>
+            {props.showBtnMeses &&
+                <TouchableOpacity style={styles.btn} onPress={props.onOpenModal}>
+                    <Text style={styles.text}>{props.mesAtual}</Text>
+                </TouchableOpacity>
+            }
         </View>
     )
 }
