@@ -52,5 +52,20 @@ const signup = async (userName, password, confirmPassword, nomeCompleto) => {
         showError(e)
     }
 }
-export { signin, refreshToken, signup }
+
+const logout = async () => {
+    try {
+        const response = await api.get(`/auth/revoke`)
+        delete api.defaults.headers.common['Authorization']
+        AsyncStorage.removeItem('userDataFinancas')
+
+        console.log(response.status)
+        console.log(response.data)
+        return response.data
+    } catch (e) {
+        showError(e)
+    }
+}
+
+export { signin, refreshToken, signup, logout }
 

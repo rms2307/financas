@@ -1,6 +1,6 @@
 import { createAppContainer, createSwitchNavigator } from 'react-navigation'
 
-import Tab from './Tab'
+import Drawer from './Drawer'
 import Auth from '../screens/Auth/Auth'
 import AuthOrApp from '../screens/Auth/AuthOrApp'
 
@@ -14,8 +14,8 @@ const mainRoutes = {
         screen: Auth
     },
     Tab: {
-        name: 'Tab',
-        screen: Tab
+        name: 'Drawer',
+        screen: Drawer
     }
 }
 

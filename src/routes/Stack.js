@@ -9,7 +9,7 @@ import CustosDiversos from '../screens/CustoDiverso/CustosDiversosList'
 const StackNavigator = createStackNavigator()
 
 const Stack = (props) => {
-    const mesAtual = props.mesAtual
+    const { mesAtual } = props
     return (
         <StackNavigator.Navigator initialRouteName={'Resumo'} headerMode='none'>
             <StackNavigator.Screen name='Resumo'
