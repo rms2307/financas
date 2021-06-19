@@ -1,12 +1,11 @@
 import React from 'react'
 import { Text, View, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer'
+import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer'
 
 import colors from '../common/colors'
 
 const MenuDrawer = (props) => {
-
     return (
         <DrawerContentScrollView {...props}>
             <View style={styles.containerTitle}>
@@ -21,6 +20,14 @@ const MenuDrawer = (props) => {
                 labelStyle={styles.labelStyle}
                 itemStyle={styles.itemStyle}
                 {...props} />
+            <DrawerItem
+                label='Sair'
+                activeBackgroundColor={colors.primary.light}
+                activeTintColor={colors.primary.contrastText}
+                labelStyle={styles.labelStyle}
+                itemStyle={styles.itemStyle}
+                icon={() => <Icon name='sign-out' size={30} color='#800' />}
+                onPress={props.onSair} />
         </DrawerContentScrollView>
     )
 }

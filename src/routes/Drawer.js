@@ -8,15 +8,22 @@ import Tab from './Tab'
 import MenuDrawer from '../components/MenuDrawer'
 
 import colors from '../common/colors'
+import { logout } from '../services/authService'
 
 const DrawerNavigator = createDrawerNavigator()
 
 const Drawer = (props) => {
+
+    const sair = async () => {
+        const resp = await logout()
+        resp && props.navigation.navigate('Auth')
+    }
+
     return (
         <SafeAreaView style={{ flexGrow: 1, backgroundColor: colors.background }}>
             <NavigationContainer>
                 <DrawerNavigator.Navigator initialRouteName='Finanças'
-                    drawerContent={(props) => <MenuDrawer {...props} />}>
+                    drawerContent={(props) => <MenuDrawer {...props} onSair={sair} />}>
                     <DrawerNavigator.Screen name='Profile' >
                         {(props) => (
                             <Profile {...props} />

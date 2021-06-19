@@ -59,8 +59,6 @@ const logout = async () => {
         delete api.defaults.headers.common['Authorization']
         AsyncStorage.removeItem('userDataFinancas')
 
-        console.log(response.status)
-        console.log(response.data)
         return response.data
     } catch (e) {
         showError(e)
