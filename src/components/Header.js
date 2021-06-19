@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        backgroundColor: colors.primary.light,
+        backgroundColor: colors.primary.main,
         padding: 10,
     },
     btn: {

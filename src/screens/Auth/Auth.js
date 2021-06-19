@@ -17,14 +17,13 @@ const Auth = (props) => {
 
     const login = async () => {
         const user = await signin(userName.toLowerCase(), password)
-
-        user && navigation.navigate('Tab', user)
+        user && navigation.navigate('Drawer', user)
     }
 
     const cadastrar = async () => {
         const user = await signup(userName.toLowerCase(), password, confirmPassword, nomeCompleto)
 
-        if(user) {
+        if (user) {
             await login()
         }
     }
@@ -33,16 +32,15 @@ const Auth = (props) => {
         <ImageBackground source={backgroundImage} style={styles.background}>
             <View style={styles.container}>
                 <View style={styles.titleContainer}>
-                    <Text style={styles.title}>MY</Text>
-                    <Text style={styles.title}>WALLET</Text>
+                    <Text style={styles.title}>My</Text>
+                    <Text style={styles.title}>Wallet</Text>
                 </View>
                 <View style={styles.formContainer}>
                     {cadastrarNovoUser &&
                         <AuthInput icon='user' placeholder='Nome Completo'
                             value={nomeCompleto}
                             style={styles.input}
-                            onChangeText={(nome) => setNomeCompleto(nome)} />
-                    }
+                            onChangeText={(nome) => setNomeCompleto(nome)} />}
                     <AuthInput icon='user' placeholder='Nome de Usuário'
                         value={userName}
                         style={styles.input}
@@ -55,8 +53,7 @@ const Auth = (props) => {
                         <AuthInput icon='lock' placeholder='Confirmar Senha' secureTextEntry={true}
                             value={confirmPassword}
                             style={styles.input}
-                            onChangeText={(pass) => setConfirmPassword(pass)} />
-                    }
+                            onChangeText={(pass) => setConfirmPassword(pass)} />}
                     <TouchableOpacity onPress={cadastrarNovoUser ? cadastrar : login}>
                         <View style={styles.buttonLogin}>
                             <Text style={styles.buttonText}>
@@ -65,22 +62,33 @@ const Auth = (props) => {
                         </View>
                     </TouchableOpacity>
                 </View>
-                <View style={styles.signupContainer} >
-                    <TouchableOpacity onPress={() => setCadastrarNovoUser(true)}>
-                        <View style={styles.buttonSignup}>
-                            <Text style={styles.buttonText}>
-                                CRIAR CONTAR
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => console.log('esqueceu senha')}>
-                        <View style={styles.buttonLikeText}>
-                            <Text style={styles.buttonText}>
-                                Esqueceu a senha?
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
+                {!cadastrarNovoUser &&
+                    <View style={styles.signupContainer} >
+                        <TouchableOpacity onPress={() => setCadastrarNovoUser(true)}>
+                            <View style={styles.buttonSignup}>
+                                <Text style={styles.buttonText}>
+                                    CRIAR CONTAR
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => console.log('esqueceu senha')}>
+                            <View style={styles.buttonLikeText}>
+                                <Text style={styles.buttonText}>
+                                    Esqueceu a senha?
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>}
+                {cadastrarNovoUser &&
+                    <View style={styles.signupContainer} >
+                        <TouchableOpacity onPress={() => setCadastrarNovoUser(false)}>
+                            <View style={styles.buttonSignup}>
+                                <Text style={styles.buttonText}>
+                                    CANCELAR
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>}
             </View>
         </ImageBackground>
     )
@@ -95,9 +103,8 @@ const styles = StyleSheet.create({
     },
     title: {
         color: colors.primary.contrastText,
-        fontWeight: 'bold',
         fontSize: 50,
-        fontFamily: "Righteous",
+        fontFamily: 'Lato-Light',
     },
     titleContainer: {
         marginTop: 50,
@@ -106,7 +113,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         alignItems: 'center'
     },
     formContainer: {

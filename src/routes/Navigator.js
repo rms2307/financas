@@ -13,7 +13,7 @@ const mainRoutes = {
         name: 'Auth',
         screen: Auth
     },
-    Tab: {
+    Drawer: {
         name: 'Drawer',
         screen: Drawer
     }

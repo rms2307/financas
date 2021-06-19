@@ -67,5 +67,15 @@ const logout = async () => {
     }
 }
 
-export { signin, refreshToken, signup, logout }
+const getUser = async () => {
+    try {
+        const response = await api.get(`/users`)
+        
+        return response.data
+    } catch (e) {
+        showError(e)
+    }
+}
+
+export { signin, refreshToken, signup, logout, getUser }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, View, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer'
+import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer'
 
 import colors from '../common/colors'
 
@@ -10,7 +10,7 @@ const MenuDrawer = (props) => {
     return (
         <DrawerContentScrollView {...props}>
             <View style={styles.containerTitle}>
-                <Text style={styles.title}>MY WALLET</Text>
+                <Text style={styles.title}>My Wallet</Text>
                 <View style={styles.icon}>
                     <Icon name='user' size={80} color={'#FFF'} />
                 </View>
@@ -29,15 +29,14 @@ const styles = StyleSheet.create({
     containerTitle: {
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: colors.primary.light,
+        backgroundColor: colors.primary.main,
         padding: 14,
         marginTop: -4
     },
     title: {
         color: colors.primary.contrastText,
-        fontWeight: 'bold',
         fontSize: 30,
-        fontFamily: "Righteous",
+        fontFamily: 'Lato-Light',
         margin: 8,
     },
     icon: {
@@ -50,11 +49,11 @@ const styles = StyleSheet.create({
         borderBottomWidth: 4,
         borderColor: '#FFF',
         borderRadius: 60,
-        margin: 4
+        margin: 4,
     },
     labelStyle: {
         fontSize: 25,
-        fontWeight: 'bold',
+        fontFamily: 'Lato-Light',
     },
     itemStyle: {
         borderRadius: 0,

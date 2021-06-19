@@ -3,8 +3,6 @@ import { View, ActivityIndicator } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import moment from 'moment'
 
-import Carregando from '../../components/Carregando'
-
 import { refreshToken } from '../../services/authService'
 import api from '../../services/api'
 import colors from '../../common/colors'
@@ -33,11 +31,11 @@ const AuthOrApp = (props) => {
                     // Token expirado
 
                     const user = await refreshToken(userData.accessToken, userData.refreshToken)
-                    user ? navigation.navigate('Tab', user) : navigation.navigate('Auth')
+                    user ? navigation.navigate('Drawer', user) : navigation.navigate('Auth')
                 } else {
 
                     api.defaults.headers.common['Authorization'] = `bearer ${userData.accessToken}`
-                    navigation.navigate('Tab', userData)
+                    navigation.navigate('Drawer', userData)
                 }
             } else {
                 navigation.navigate('Auth')
