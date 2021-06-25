@@ -37,11 +37,12 @@ const refreshToken = async (accessToken, refreshToken) => {
     }
 }
 
-const signup = async (userName, password, confirmPassword, nomeCompleto) => {
+const signup = async (userName, email, password, confirmPassword, nomeCompleto) => {
     try {
         const response = await api.post(`/users`,
             {
                 userName,
+                email,
                 password,
                 confirmPassword,
                 nomeCompleto
@@ -65,6 +66,21 @@ const logout = async () => {
     }
 }
 
+const recuperarSenha = async (email) => {
+    try {
+        const response = await api.post(`/auth/recuperar-senha`, 
+        {
+            email
+        })
+        delete api.defaults.headers.common['Authorization']
+        AsyncStorage.removeItem('userDataFinancas')
+
+        return response.data
+    } catch (e) {
+        showError(e)
+    }
+}
+
 const getUser = async () => {
     try {
         const response = await api.get(`/users`)
@@ -75,5 +91,5 @@ const getUser = async () => {
     }
 }
 
-export { signin, refreshToken, signup, logout, getUser }
+export { signin, refreshToken, signup, logout, getUser, recuperarSenha }
 

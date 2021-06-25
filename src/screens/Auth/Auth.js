@@ -1,31 +1,35 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { ImageBackground, View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native'
 
 import AuthInput from '../../components/AuthInput'
 
-import { signin, signup } from '../../services/authService'
+import { signin, signup, recuperarSenha } from '../../services/authService'
 import backgroundImage from '../../../assets/imgs/auth-background.png'
 import colors from '../../common/colors'
 
 const Auth = (props) => {
     const [cadastrarNovoUser, setCadastrarNovoUser] = useState(false)
+    const [esqueceuSenha, setEsqueceuSenha] = useState(false)
     const [userName, setUserName] = useState('robson.moraes')
-    const [password, setPassword] = useState('teste123')
+    const [email, setEmail] = useState('rms2307@outlook.com')
+    const [password, setPassword] = useState('4gej5u')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [nomeCompleto, setNomeCompleto] = useState('')
     const { navigation } = props
 
-    const login = async () => {
+    const _signin = async () => {
         const user = await signin(userName.toLowerCase(), password)
         user && navigation.navigate('Drawer', user)
     }
 
-    const cadastrar = async () => {
-        const user = await signup(userName.toLowerCase(), password, confirmPassword, nomeCompleto)
+    const _signup = async () => {
+        const user = await signup(userName.toLowerCase(), email, password, confirmPassword, nomeCompleto)
+        user && await _signin()
+    }
 
-        if (user) {
-            await login()
-        }
+    const _recuperarSenha = async () => {
+        await recuperarSenha(email)
+        setEsqueceuSenha(false)
     }
 
     return (
@@ -41,28 +45,35 @@ const Auth = (props) => {
                             value={nomeCompleto}
                             style={styles.input}
                             onChangeText={(nome) => setNomeCompleto(nome)} />}
-                    <AuthInput icon='user' placeholder='Nome de Usuário'
-                        value={userName}
-                        style={styles.input}
-                        onChangeText={(userName) => setUserName(userName)} />
-                    <AuthInput icon='lock' placeholder='Senha' secureTextEntry={true}
-                        value={password}
-                        style={styles.input}
-                        onChangeText={(pass) => setPassword(pass)} />
+                    {!esqueceuSenha &&
+                        <AuthInput icon='user' placeholder='Nome de Usuário'
+                            value={userName}
+                            style={styles.input}
+                            onChangeText={(userName) => setUserName(userName)} />}
+                    {(cadastrarNovoUser || esqueceuSenha) &&
+                        <AuthInput icon='at' placeholder={esqueceuSenha ? 'Digite o e-mail cadastrado' : 'E-mail'}
+                            value={email}
+                            style={styles.input}
+                            onChangeText={(email) => setEmail(email)} />}
+                    {!esqueceuSenha &&
+                        <AuthInput icon='lock' placeholder='Senha' secureTextEntry={true}
+                            value={password}
+                            style={styles.input}
+                            onChangeText={(pass) => setPassword(pass)} />}
                     {cadastrarNovoUser &&
                         <AuthInput icon='lock' placeholder='Confirmar Senha' secureTextEntry={true}
                             value={confirmPassword}
                             style={styles.input}
                             onChangeText={(pass) => setConfirmPassword(pass)} />}
-                    <TouchableOpacity onPress={cadastrarNovoUser ? cadastrar : login}>
+                    <TouchableOpacity onPress={cadastrarNovoUser ? _signup : esqueceuSenha ? _recuperarSenha : _signin}>
                         <View style={styles.buttonLogin}>
                             <Text style={styles.buttonText}>
-                                {cadastrarNovoUser ? 'SALVAR' : 'ENTRAR'}
+                                {cadastrarNovoUser ? 'SALVAR' : esqueceuSenha ? 'RECUPERAR SENHA' : 'ENTRAR'}
                             </Text>
                         </View>
                     </TouchableOpacity>
                 </View>
-                {!cadastrarNovoUser &&
+                {!cadastrarNovoUser && !esqueceuSenha &&
                     <View style={styles.signupContainer} >
                         <TouchableOpacity onPress={() => setCadastrarNovoUser(true)}>
                             <View style={styles.buttonSignup}>
@@ -71,7 +82,7 @@ const Auth = (props) => {
                                 </Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => console.log('esqueceu senha')}>
+                        <TouchableOpacity onPress={() => setEsqueceuSenha(true)}>
                             <View style={styles.buttonLikeText}>
                                 <Text style={styles.buttonText}>
                                     Esqueceu a senha?
@@ -79,9 +90,9 @@ const Auth = (props) => {
                             </View>
                         </TouchableOpacity>
                     </View>}
-                {cadastrarNovoUser &&
+                {(cadastrarNovoUser || esqueceuSenha) &&
                     <View style={styles.signupContainer} >
-                        <TouchableOpacity onPress={() => setCadastrarNovoUser(false)}>
+                        <TouchableOpacity onPress={() => { setCadastrarNovoUser(false), setEsqueceuSenha(false) }}>
                             <View style={styles.buttonSignup}>
                                 <Text style={styles.buttonText}>
                                     CANCELAR
@@ -141,6 +152,11 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: '#FFF',
+        fontSize: 22,
+        fontWeight: 'bold'
+    },
+    labelEsqueciSenha: {
+        color: "#000",
         fontSize: 22,
         fontWeight: 'bold'
     }
