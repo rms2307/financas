@@ -2,34 +2,42 @@ import React, { useState } from 'react'
 import { ImageBackground, View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native'
 
 import AuthInput from '../../components/AuthInput'
+import BotaoWithState from '../../components/BotaoWithState'
 
 import { signin, signup, recuperarSenha } from '../../services/authService'
 import backgroundImage from '../../../assets/imgs/auth-background.png'
 import colors from '../../common/colors'
 
 const Auth = (props) => {
+    const [carregando, setCarregando] = useState(false)
     const [cadastrarNovoUser, setCadastrarNovoUser] = useState(false)
     const [esqueceuSenha, setEsqueceuSenha] = useState(false)
     const [userName, setUserName] = useState('robson.moraes')
     const [email, setEmail] = useState('rms2307@outlook.com')
-    const [password, setPassword] = useState('4gej5u')
+    const [password, setPassword] = useState('zb7bu5')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [nomeCompleto, setNomeCompleto] = useState('')
     const { navigation } = props
 
     const _signin = async () => {
+        setCarregando(true)
         const user = await signin(userName.toLowerCase(), password)
         user && navigation.navigate('Drawer', user)
+        !user && setCarregando(false)
     }
 
     const _signup = async () => {
+        setCarregando(true)
         const user = await signup(userName.toLowerCase(), email, password, confirmPassword, nomeCompleto)
         user && await _signin()
+        !user && setCarregando(false)
     }
 
     const _recuperarSenha = async () => {
+        setCarregando(true)
         await recuperarSenha(email)
         setEsqueceuSenha(false)
+        setCarregando(false)
     }
 
     return (
@@ -65,13 +73,10 @@ const Auth = (props) => {
                             value={confirmPassword}
                             style={styles.input}
                             onChangeText={(pass) => setConfirmPassword(pass)} />}
-                    <TouchableOpacity onPress={cadastrarNovoUser ? _signup : esqueceuSenha ? _recuperarSenha : _signin}>
-                        <View style={styles.buttonLogin}>
-                            <Text style={styles.buttonText}>
-                                {cadastrarNovoUser ? 'SALVAR' : esqueceuSenha ? 'RECUPERAR SENHA' : 'ENTRAR'}
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
+                    <BotaoWithState
+                        label={cadastrarNovoUser ? 'SALVAR' : esqueceuSenha ? 'RECUPERAR SENHA' : 'ENTRAR'}
+                        onPress={cadastrarNovoUser ? _signup : esqueceuSenha ? _recuperarSenha : _signin}
+                        carregando={carregando} />
                 </View>
                 {!cadastrarNovoUser && !esqueceuSenha &&
                     <View style={styles.signupContainer} >
@@ -133,12 +138,6 @@ const styles = StyleSheet.create({
     signupContainer: {
         width: Dimensions.get('window').width - 60,
         marginBottom: 20
-    },
-    buttonLogin: {
-        backgroundColor: colors.primary.main,
-        marginTop: 16,
-        padding: 10,
-        alignItems: 'center'
     },
     buttonSignup: {
         borderWidth: 3,
