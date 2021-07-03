@@ -14,9 +14,9 @@ const Auth = (props) => {
     const [esqueceuSenha, setEsqueceuSenha] = useState(false)
     const [userName, setUserName] = useState('robson.moraes')
     const [email, setEmail] = useState('rms2307@outlook.com')
-    const [password, setPassword] = useState('zb7bu5')
-    const [confirmPassword, setConfirmPassword] = useState('')
-    const [nomeCompleto, setNomeCompleto] = useState('')
+    const [password, setPassword] = useState('q6zne0')
+    const [confirmPassword, setConfirmPassword] = useState('teste123')
+    const [nomeCompleto, setNomeCompleto] = useState('Robson Moraes')
     const { navigation } = props
 
     const _signin = async () => {
