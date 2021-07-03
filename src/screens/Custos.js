@@ -2,10 +2,10 @@ import React from 'react'
 
 import Stack from '../routes/Stack'
 
-const Month = (props) => {
+const Custos = (props) => {
     return (
         <Stack mesAtual={props.mesAtual} />
     )
 }
 
-export default Month
+export default Custos

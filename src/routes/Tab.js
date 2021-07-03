@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { SafeAreaView, StatusBar } from 'react-native'
-import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
-import Month from '../screens/Month'
+import Custos from '../screens/Custos'
 import CreditCard from '../screens/CreditCard'
 import Header from '../components/Header'
 import ModalMeses from '../components/ModalMeses'
+import Resumo from '../components/Resumo'
 
 import colors from '../common/colors'
 import getMesAtual from '../common/getMesAtual'
@@ -36,7 +36,12 @@ const Tab = (props) => {
                     tabBarIcon: ({ focused, color }) => {
                         let iconName;
                         switch (route.name) {
-                            case 'Month':
+                            case 'Resumo':
+                                iconName = focused
+                                    ? 'home'
+                                    : 'home-outline'
+                                break
+                            case 'Custos':
                                 iconName = focused
                                     ? 'wallet'
                                     : 'wallet-outline'
@@ -55,10 +60,15 @@ const Tab = (props) => {
                     inactiveTintColor: colors.primary.main,
                     showLabel: false,
                 }}
-                initialRouteName='Month'>
-                <TabNavigator.Screen name='Month'>
+                initialRouteName='Resumo'>
+                <TabNavigator.Screen name='Resumo'>
                     {(props) => (
-                        <Month {...props} mesAtual={mesAtual.num} />
+                        <Resumo {...props} mesAtual={mesAtual.num} />
+                    )}
+                </TabNavigator.Screen>
+                <TabNavigator.Screen name='Custos'>
+                    {(props) => (
+                        <Custos {...props} mesAtual={mesAtual.num} />
                     )}
                 </TabNavigator.Screen>
                 <TabNavigator.Screen name='CreditCard'>
