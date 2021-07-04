@@ -8,6 +8,7 @@ import CreditCard from '../screens/CreditCard'
 import Header from '../components/Header'
 import ModalMeses from '../components/ModalMeses'
 import Resumo from '../components/Resumo'
+import ReceitasList from '../screens/Receitas/ReceitasList'
 
 import colors from '../common/colors'
 import getMesAtual from '../common/getMesAtual'
@@ -41,6 +42,11 @@ const Tab = (props) => {
                                     ? 'home'
                                     : 'home-outline'
                                 break
+                            case 'Receitas':
+                                iconName = focused
+                                    ? 'cash'
+                                    : 'cash-outline'
+                                break
                             case 'Custos':
                                 iconName = focused
                                     ? 'wallet'
@@ -52,7 +58,7 @@ const Tab = (props) => {
                                     : 'card-outline'
                                 break
                         }
-                        return <Ionicons name={iconName} size={35} color={color} />
+                        return <Ionicons name={iconName} size={30} color={color} />
                     },
                 })}
                 tabBarOptions={{
@@ -64,6 +70,11 @@ const Tab = (props) => {
                 <TabNavigator.Screen name='Resumo'>
                     {(props) => (
                         <Resumo {...props} mesAtual={mesAtual.num} />
+                    )}
+                </TabNavigator.Screen>
+                <TabNavigator.Screen name='Receitas'>
+                    {(props) => (
+                        <ReceitasList {...props} mesAtual={mesAtual.num} />
                     )}
                 </TabNavigator.Screen>
                 <TabNavigator.Screen name='Custos'>
