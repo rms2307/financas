@@ -7,6 +7,26 @@ async function buscarReceitasDoMes(mes) {
         .catch((err) => showError(err))
 }
 
+async function buscarReceita(id) {
+    return api.get(`/receitas/${id}`)
+        .then((response) => response.data)
+        .catch((err) => showError(err))
+}
+
+async function cadastrarReceita(receita) {
+    return api.post(`/receitas`, receita)
+        .then((response) => response.data)
+        .catch((err) => showError(err))
+}
+
+async function editarReceita(receita) {
+    try {
+        await api.put(`/receitas`, receita)
+    } catch (err) {
+        showError(err)
+    }
+}
+
 async function deletarReceita(id) {
     try {
         await api.delete(`/receitas/${id}`)
@@ -15,4 +35,4 @@ async function deletarReceita(id) {
     }
 }
 
-export { buscarReceitasDoMes, deletarReceita }
+export { buscarReceitasDoMes, buscarReceita, cadastrarReceita, editarReceita, deletarReceita }
