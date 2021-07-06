@@ -12,11 +12,11 @@ const Auth = (props) => {
     const [carregando, setCarregando] = useState(false)
     const [cadastrarNovoUser, setCadastrarNovoUser] = useState(false)
     const [esqueceuSenha, setEsqueceuSenha] = useState(false)
-    const [userName, setUserName] = useState('robson.moraes')
-    const [email, setEmail] = useState('rms2307@outlook.com')
-    const [password, setPassword] = useState('mf3gz0')
-    const [confirmPassword, setConfirmPassword] = useState('teste123')
-    const [nomeCompleto, setNomeCompleto] = useState('Robson Moraes')
+    const [userName, setUserName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const [nomeCompleto, setNomeCompleto] = useState('')
     const { navigation } = props
 
     const _signin = async () => {
